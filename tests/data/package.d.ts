@@ -45,6 +45,7 @@ export class Package {
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Package;
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Package;
     public static verify(message: { [k: string]: any }): (string|null);
+    public static _getObjectMap(): void;
     public static fromObject(object: { [k: string]: any }): Package;
     public static toObject(message: Package, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
@@ -67,6 +68,7 @@ export namespace Package {
         public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Package.Repository;
         public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Package.Repository;
         public static verify(message: { [k: string]: any }): (string|null);
+        public static _getObjectMap(): void;
         public static fromObject(object: { [k: string]: any }): Package.Repository;
         public static toObject(message: Package.Repository, options?: $protobuf.IConversionOptions): { [k: string]: any };
         public toJSON(): { [k: string]: any };

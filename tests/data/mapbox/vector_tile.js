@@ -1,8 +1,3 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
-"use strict";
-
-var $protobuf = require("../../../minimal");
-
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
@@ -164,6 +159,28 @@ $root.vector_tile = (function() {
         };
 
         /**
+         * Object mapper - array values are:
+         *   [
+         *     required field
+         *     repeated field
+         *     field type - (a)rray, (m)ap, (e)num, (s)calar
+         *     field name
+         *     JavaScript scalar type
+         *     enumById variable
+         *     enumByName variable
+         *   ]
+         */
+        Tile._getObjectMap = function _getObjectMap() {
+            return [[
+                    0,
+                    1,
+                    "Layer",
+                    "layers",
+                    "vector_tile.Tile.ILayer"
+                ]];
+        };
+
+        /**
          * Creates a Tile message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
          * @memberof vector_tile.Tile
@@ -174,18 +191,7 @@ $root.vector_tile = (function() {
         Tile.fromObject = function fromObject(object) {
             if (object instanceof $root.vector_tile.Tile)
                 return object;
-            var message = new $root.vector_tile.Tile();
-            if (object.layers) {
-                if (!Array.isArray(object.layers))
-                    throw TypeError(".vector_tile.Tile.layers: array expected");
-                message.layers = [];
-                for (var i = 0; i < object.layers.length; ++i) {
-                    if (typeof object.layers[i] !== "object")
-                        throw TypeError(".vector_tile.Tile.layers: object expected");
-                    message.layers[i] = $root.vector_tile.Tile.Layer.fromObject(object.layers[i]);
-                }
-            }
-            return message;
+            return $root.objectMapper.toMessage(object, new $root.vector_tile.Tile(), $root.vector_tile.Tile._getObjectMap());
         };
 
         /**
@@ -200,15 +206,7 @@ $root.vector_tile = (function() {
         Tile.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
-            if (options.arrays || options.defaults)
-                object.layers = [];
-            if (message.layers && message.layers.length) {
-                object.layers = [];
-                for (var j = 0; j < message.layers.length; ++j)
-                    object.layers[j] = $root.vector_tile.Tile.Layer.toObject(message.layers[j], options);
-            }
-            return object;
+            return $root.objectMapper.toObject(message, options, $root.vector_tile.Tile._getObjectMap());
         };
 
         /**
@@ -477,6 +475,72 @@ $root.vector_tile = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            Value._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "stringValue",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "floatValue",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "doubleValue",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "intValue",
+                        "number|Long"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "uintValue",
+                        "number|Long"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "sintValue",
+                        "number|Long"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "boolValue",
+                        "boolean"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a Value message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof vector_tile.Tile.Value
@@ -487,43 +551,7 @@ $root.vector_tile = (function() {
             Value.fromObject = function fromObject(object) {
                 if (object instanceof $root.vector_tile.Tile.Value)
                     return object;
-                var message = new $root.vector_tile.Tile.Value();
-                if (object.stringValue != null)
-                    message.stringValue = String(object.stringValue);
-                if (object.floatValue != null)
-                    message.floatValue = Number(object.floatValue);
-                if (object.doubleValue != null)
-                    message.doubleValue = Number(object.doubleValue);
-                if (object.intValue != null)
-                    if ($util.Long)
-                        (message.intValue = $util.Long.fromValue(object.intValue)).unsigned = false;
-                    else if (typeof object.intValue === "string")
-                        message.intValue = parseInt(object.intValue, 10);
-                    else if (typeof object.intValue === "number")
-                        message.intValue = object.intValue;
-                    else if (typeof object.intValue === "object")
-                        message.intValue = new $util.LongBits(object.intValue.low >>> 0, object.intValue.high >>> 0).toNumber();
-                if (object.uintValue != null)
-                    if ($util.Long)
-                        (message.uintValue = $util.Long.fromValue(object.uintValue)).unsigned = true;
-                    else if (typeof object.uintValue === "string")
-                        message.uintValue = parseInt(object.uintValue, 10);
-                    else if (typeof object.uintValue === "number")
-                        message.uintValue = object.uintValue;
-                    else if (typeof object.uintValue === "object")
-                        message.uintValue = new $util.LongBits(object.uintValue.low >>> 0, object.uintValue.high >>> 0).toNumber(true);
-                if (object.sintValue != null)
-                    if ($util.Long)
-                        (message.sintValue = $util.Long.fromValue(object.sintValue)).unsigned = false;
-                    else if (typeof object.sintValue === "string")
-                        message.sintValue = parseInt(object.sintValue, 10);
-                    else if (typeof object.sintValue === "number")
-                        message.sintValue = object.sintValue;
-                    else if (typeof object.sintValue === "object")
-                        message.sintValue = new $util.LongBits(object.sintValue.low >>> 0, object.sintValue.high >>> 0).toNumber();
-                if (object.boolValue != null)
-                    message.boolValue = Boolean(object.boolValue);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.vector_tile.Tile.Value(), $root.vector_tile.Tile.Value._getObjectMap());
             };
 
             /**
@@ -538,52 +566,7 @@ $root.vector_tile = (function() {
             Value.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.stringValue = "";
-                    object.floatValue = 0;
-                    object.doubleValue = 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, false);
-                        object.intValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.intValue = options.longs === String ? "0" : 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.uintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.uintValue = options.longs === String ? "0" : 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, false);
-                        object.sintValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.sintValue = options.longs === String ? "0" : 0;
-                    object.boolValue = false;
-                }
-                if (message.stringValue != null && message.hasOwnProperty("stringValue"))
-                    object.stringValue = message.stringValue;
-                if (message.floatValue != null && message.hasOwnProperty("floatValue"))
-                    object.floatValue = options.json && !isFinite(message.floatValue) ? String(message.floatValue) : message.floatValue;
-                if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
-                    object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
-                if (message.intValue != null && message.hasOwnProperty("intValue"))
-                    if (typeof message.intValue === "number")
-                        object.intValue = options.longs === String ? String(message.intValue) : message.intValue;
-                    else
-                        object.intValue = options.longs === String ? $util.Long.prototype.toString.call(message.intValue) : options.longs === Number ? new $util.LongBits(message.intValue.low >>> 0, message.intValue.high >>> 0).toNumber() : message.intValue;
-                if (message.uintValue != null && message.hasOwnProperty("uintValue"))
-                    if (typeof message.uintValue === "number")
-                        object.uintValue = options.longs === String ? String(message.uintValue) : message.uintValue;
-                    else
-                        object.uintValue = options.longs === String ? $util.Long.prototype.toString.call(message.uintValue) : options.longs === Number ? new $util.LongBits(message.uintValue.low >>> 0, message.uintValue.high >>> 0).toNumber(true) : message.uintValue;
-                if (message.sintValue != null && message.hasOwnProperty("sintValue"))
-                    if (typeof message.sintValue === "number")
-                        object.sintValue = options.longs === String ? String(message.sintValue) : message.sintValue;
-                    else
-                        object.sintValue = options.longs === String ? $util.Long.prototype.toString.call(message.sintValue) : options.longs === Number ? new $util.LongBits(message.sintValue.low >>> 0, message.sintValue.high >>> 0).toNumber() : message.sintValue;
-                if (message.boolValue != null && message.hasOwnProperty("boolValue"))
-                    object.boolValue = message.boolValue;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.vector_tile.Tile.Value._getObjectMap());
             };
 
             /**
@@ -826,6 +809,65 @@ $root.vector_tile = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            Feature._getObjectMap = function _getObjectMap() {
+                var GeomTypeById = {
+                    0: "UNKNOWN",
+                    1: "POINT",
+                    2: "LINESTRING",
+                    3: "POLYGON"
+                };
+                var GeomTypeByName = {
+                    UNKNOWN: 0,
+                    POINT: 1,
+                    LINESTRING: 2,
+                    POLYGON: 3
+                };
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "id",
+                        "number|Long"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "tags",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "e",
+                        "type",
+                        vector_tile.Tile.GeomType,
+                        GeomTypeById,
+                        GeomTypeByName
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "geometry",
+                        "number"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a Feature message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof vector_tile.Tile.Feature
@@ -836,49 +878,7 @@ $root.vector_tile = (function() {
             Feature.fromObject = function fromObject(object) {
                 if (object instanceof $root.vector_tile.Tile.Feature)
                     return object;
-                var message = new $root.vector_tile.Tile.Feature();
-                if (object.id != null)
-                    if ($util.Long)
-                        (message.id = $util.Long.fromValue(object.id)).unsigned = true;
-                    else if (typeof object.id === "string")
-                        message.id = parseInt(object.id, 10);
-                    else if (typeof object.id === "number")
-                        message.id = object.id;
-                    else if (typeof object.id === "object")
-                        message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber(true);
-                if (object.tags) {
-                    if (!Array.isArray(object.tags))
-                        throw TypeError(".vector_tile.Tile.Feature.tags: array expected");
-                    message.tags = [];
-                    for (var i = 0; i < object.tags.length; ++i)
-                        message.tags[i] = object.tags[i] >>> 0;
-                }
-                switch (object.type) {
-                case "UNKNOWN":
-                case 0:
-                    message.type = 0;
-                    break;
-                case "POINT":
-                case 1:
-                    message.type = 1;
-                    break;
-                case "LINESTRING":
-                case 2:
-                    message.type = 2;
-                    break;
-                case "POLYGON":
-                case 3:
-                    message.type = 3;
-                    break;
-                }
-                if (object.geometry) {
-                    if (!Array.isArray(object.geometry))
-                        throw TypeError(".vector_tile.Tile.Feature.geometry: array expected");
-                    message.geometry = [];
-                    for (var i = 0; i < object.geometry.length; ++i)
-                        message.geometry[i] = object.geometry[i] >>> 0;
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.vector_tile.Tile.Feature(), $root.vector_tile.Tile.Feature._getObjectMap());
             };
 
             /**
@@ -893,37 +893,7 @@ $root.vector_tile = (function() {
             Feature.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults) {
-                    object.tags = [];
-                    object.geometry = [];
-                }
-                if (options.defaults) {
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.id = options.longs === String ? "0" : 0;
-                    object.type = options.enums === String ? "UNKNOWN" : 0;
-                }
-                if (message.id != null && message.hasOwnProperty("id"))
-                    if (typeof message.id === "number")
-                        object.id = options.longs === String ? String(message.id) : message.id;
-                    else
-                        object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber(true) : message.id;
-                if (message.tags && message.tags.length) {
-                    object.tags = [];
-                    for (var j = 0; j < message.tags.length; ++j)
-                        object.tags[j] = message.tags[j];
-                }
-                if (message.type != null && message.hasOwnProperty("type"))
-                    object.type = options.enums === String ? $root.vector_tile.Tile.GeomType[message.type] : message.type;
-                if (message.geometry && message.geometry.length) {
-                    object.geometry = [];
-                    for (var j = 0; j < message.geometry.length; ++j)
-                        object.geometry[j] = message.geometry[j];
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.vector_tile.Tile.Feature._getObjectMap());
             };
 
             /**
@@ -1177,7 +1147,7 @@ $root.vector_tile = (function() {
                     if (!Array.isArray(message.values))
                         return "values: array expected";
                     for (var i = 0; i < message.values.length; ++i) {
-                        error = $root.vector_tile.Tile.Value.verify(message.values[i]);
+                        var error = $root.vector_tile.Tile.Value.verify(message.values[i]);
                         if (error)
                             return "values." + error;
                     }
@@ -1186,6 +1156,65 @@ $root.vector_tile = (function() {
                     if (!$util.isInteger(message.extent))
                         return "extent: integer expected";
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            Layer._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        1,
+                        0,
+                        "s",
+                        "version",
+                        "number"
+                    ],
+                    [
+                        1,
+                        0,
+                        "s",
+                        "name",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "Feature",
+                        "features",
+                        "vector_tile.Tile.IFeature"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "keys",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "Value",
+                        "values",
+                        "vector_tile.Tile.IValue"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "extent",
+                        "number"
+                    ]
+                ];
             };
 
             /**
@@ -1199,41 +1228,7 @@ $root.vector_tile = (function() {
             Layer.fromObject = function fromObject(object) {
                 if (object instanceof $root.vector_tile.Tile.Layer)
                     return object;
-                var message = new $root.vector_tile.Tile.Layer();
-                if (object.version != null)
-                    message.version = object.version >>> 0;
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object.features) {
-                    if (!Array.isArray(object.features))
-                        throw TypeError(".vector_tile.Tile.Layer.features: array expected");
-                    message.features = [];
-                    for (var i = 0; i < object.features.length; ++i) {
-                        if (typeof object.features[i] !== "object")
-                            throw TypeError(".vector_tile.Tile.Layer.features: object expected");
-                        message.features[i] = $root.vector_tile.Tile.Feature.fromObject(object.features[i]);
-                    }
-                }
-                if (object.keys) {
-                    if (!Array.isArray(object.keys))
-                        throw TypeError(".vector_tile.Tile.Layer.keys: array expected");
-                    message.keys = [];
-                    for (var i = 0; i < object.keys.length; ++i)
-                        message.keys[i] = String(object.keys[i]);
-                }
-                if (object.values) {
-                    if (!Array.isArray(object.values))
-                        throw TypeError(".vector_tile.Tile.Layer.values: array expected");
-                    message.values = [];
-                    for (var i = 0; i < object.values.length; ++i) {
-                        if (typeof object.values[i] !== "object")
-                            throw TypeError(".vector_tile.Tile.Layer.values: object expected");
-                        message.values[i] = $root.vector_tile.Tile.Value.fromObject(object.values[i]);
-                    }
-                }
-                if (object.extent != null)
-                    message.extent = object.extent >>> 0;
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.vector_tile.Tile.Layer(), $root.vector_tile.Tile.Layer._getObjectMap());
             };
 
             /**
@@ -1248,39 +1243,7 @@ $root.vector_tile = (function() {
             Layer.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults) {
-                    object.features = [];
-                    object.keys = [];
-                    object.values = [];
-                }
-                if (options.defaults) {
-                    object.name = "";
-                    object.extent = 4096;
-                    object.version = 1;
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message.features && message.features.length) {
-                    object.features = [];
-                    for (var j = 0; j < message.features.length; ++j)
-                        object.features[j] = $root.vector_tile.Tile.Feature.toObject(message.features[j], options);
-                }
-                if (message.keys && message.keys.length) {
-                    object.keys = [];
-                    for (var j = 0; j < message.keys.length; ++j)
-                        object.keys[j] = message.keys[j];
-                }
-                if (message.values && message.values.length) {
-                    object.values = [];
-                    for (var j = 0; j < message.values.length; ++j)
-                        object.values[j] = $root.vector_tile.Tile.Value.toObject(message.values[j], options);
-                }
-                if (message.extent != null && message.hasOwnProperty("extent"))
-                    object.extent = message.extent;
-                if (message.version != null && message.hasOwnProperty("version"))
-                    object.version = message.version;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.vector_tile.Tile.Layer._getObjectMap());
             };
 
             /**
@@ -1302,5 +1265,3 @@ $root.vector_tile = (function() {
 
     return vector_tile;
 })();
-
-module.exports = $root;

@@ -1,6 +1,3 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
-import * as $protobuf from "../../minimal";
-
 // Common aliases
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
@@ -211,6 +208,28 @@ export const MyRequest = $root.MyRequest = (() => {
     };
 
     /**
+     * Object mapper - array values are:
+     *   [
+     *     required field
+     *     repeated field
+     *     field type - (a)rray, (m)ap, (e)num, (s)calar
+     *     field name
+     *     JavaScript scalar type
+     *     enumById variable
+     *     enumByName variable
+     *   ]
+     */
+    MyRequest._getObjectMap = function _getObjectMap() {
+        return [[
+                0,
+                0,
+                "s",
+                "path",
+                "string"
+            ]];
+    };
+
+    /**
      * Creates a MyRequest message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
      * @memberof MyRequest
@@ -221,10 +240,7 @@ export const MyRequest = $root.MyRequest = (() => {
     MyRequest.fromObject = function fromObject(object) {
         if (object instanceof $root.MyRequest)
             return object;
-        let message = new $root.MyRequest();
-        if (object.path != null)
-            message.path = String(object.path);
-        return message;
+        return $root.objectMapper.toMessage(object, new $root.MyRequest(), $root.MyRequest._getObjectMap());
     };
 
     /**
@@ -239,12 +255,7 @@ export const MyRequest = $root.MyRequest = (() => {
     MyRequest.toObject = function toObject(message, options) {
         if (!options)
             options = {};
-        let object = {};
-        if (options.defaults)
-            object.path = "";
-        if (message.path != null && message.hasOwnProperty("path"))
-            object.path = message.path;
-        return object;
+        return $root.objectMapper.toObject(message, options, $root.MyRequest._getObjectMap());
     };
 
     /**
@@ -397,6 +408,28 @@ export const MyResponse = $root.MyResponse = (() => {
     };
 
     /**
+     * Object mapper - array values are:
+     *   [
+     *     required field
+     *     repeated field
+     *     field type - (a)rray, (m)ap, (e)num, (s)calar
+     *     field name
+     *     JavaScript scalar type
+     *     enumById variable
+     *     enumByName variable
+     *   ]
+     */
+    MyResponse._getObjectMap = function _getObjectMap() {
+        return [[
+                0,
+                0,
+                "s",
+                "status",
+                "number"
+            ]];
+    };
+
+    /**
      * Creates a MyResponse message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
      * @memberof MyResponse
@@ -407,10 +440,7 @@ export const MyResponse = $root.MyResponse = (() => {
     MyResponse.fromObject = function fromObject(object) {
         if (object instanceof $root.MyResponse)
             return object;
-        let message = new $root.MyResponse();
-        if (object.status != null)
-            message.status = object.status | 0;
-        return message;
+        return $root.objectMapper.toMessage(object, new $root.MyResponse(), $root.MyResponse._getObjectMap());
     };
 
     /**
@@ -425,12 +455,7 @@ export const MyResponse = $root.MyResponse = (() => {
     MyResponse.toObject = function toObject(message, options) {
         if (!options)
             options = {};
-        let object = {};
-        if (options.defaults)
-            object.status = 0;
-        if (message.status != null && message.hasOwnProperty("status"))
-            object.status = message.status;
-        return object;
+        return $root.objectMapper.toObject(message, options, $root.MyResponse._getObjectMap());
     };
 
     /**
@@ -446,5 +471,3 @@ export const MyResponse = $root.MyResponse = (() => {
 
     return MyResponse;
 })();
-
-export { $root as default };

@@ -1,8 +1,3 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
-"use strict";
-
-var $protobuf = require("../../minimal");
-
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
@@ -483,6 +478,142 @@ $root.Package = (function() {
     };
 
     /**
+     * Object mapper - array values are:
+     *   [
+     *     required field
+     *     repeated field
+     *     field type - (a)rray, (m)ap, (e)num, (s)calar
+     *     field name
+     *     JavaScript scalar type
+     *     enumById variable
+     *     enumByName variable
+     *   ]
+     */
+    Package._getObjectMap = function _getObjectMap() {
+        return [
+            [
+                0,
+                0,
+                "s",
+                "name",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "version",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "versionScheme",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "description",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "author",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "license",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "Repository",
+                "repository",
+                "Package.IRepository"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "bugs",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "homepage",
+                "string"
+            ],
+            [
+                0,
+                1,
+                "s",
+                "keywords",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "main",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "m",
+                "bin",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "m",
+                "scripts",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "m",
+                "dependencies",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "m",
+                "devDependencies",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "types",
+                "string"
+            ],
+            [
+                0,
+                1,
+                "s",
+                "cliDependencies",
+                "string"
+            ]
+        ];
+    };
+
+    /**
      * Creates a Package message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
      * @memberof Package
@@ -493,75 +624,7 @@ $root.Package = (function() {
     Package.fromObject = function fromObject(object) {
         if (object instanceof $root.Package)
             return object;
-        var message = new $root.Package();
-        if (object.name != null)
-            message.name = String(object.name);
-        if (object.version != null)
-            message.version = String(object.version);
-        if (object.versionScheme != null)
-            message.versionScheme = String(object.versionScheme);
-        if (object.description != null)
-            message.description = String(object.description);
-        if (object.author != null)
-            message.author = String(object.author);
-        if (object.license != null)
-            message.license = String(object.license);
-        if (object.repository != null) {
-            if (typeof object.repository !== "object")
-                throw TypeError(".Package.repository: object expected");
-            message.repository = $root.Package.Repository.fromObject(object.repository);
-        }
-        if (object.bugs != null)
-            message.bugs = String(object.bugs);
-        if (object.homepage != null)
-            message.homepage = String(object.homepage);
-        if (object.keywords) {
-            if (!Array.isArray(object.keywords))
-                throw TypeError(".Package.keywords: array expected");
-            message.keywords = [];
-            for (var i = 0; i < object.keywords.length; ++i)
-                message.keywords[i] = String(object.keywords[i]);
-        }
-        if (object.main != null)
-            message.main = String(object.main);
-        if (object.bin) {
-            if (typeof object.bin !== "object")
-                throw TypeError(".Package.bin: object expected");
-            message.bin = {};
-            for (var keys = Object.keys(object.bin), i = 0; i < keys.length; ++i)
-                message.bin[keys[i]] = String(object.bin[keys[i]]);
-        }
-        if (object.scripts) {
-            if (typeof object.scripts !== "object")
-                throw TypeError(".Package.scripts: object expected");
-            message.scripts = {};
-            for (var keys = Object.keys(object.scripts), i = 0; i < keys.length; ++i)
-                message.scripts[keys[i]] = String(object.scripts[keys[i]]);
-        }
-        if (object.dependencies) {
-            if (typeof object.dependencies !== "object")
-                throw TypeError(".Package.dependencies: object expected");
-            message.dependencies = {};
-            for (var keys = Object.keys(object.dependencies), i = 0; i < keys.length; ++i)
-                message.dependencies[keys[i]] = String(object.dependencies[keys[i]]);
-        }
-        if (object.devDependencies) {
-            if (typeof object.devDependencies !== "object")
-                throw TypeError(".Package.devDependencies: object expected");
-            message.devDependencies = {};
-            for (var keys = Object.keys(object.devDependencies), i = 0; i < keys.length; ++i)
-                message.devDependencies[keys[i]] = String(object.devDependencies[keys[i]]);
-        }
-        if (object.types != null)
-            message.types = String(object.types);
-        if (object.cliDependencies) {
-            if (!Array.isArray(object.cliDependencies))
-                throw TypeError(".Package.cliDependencies: array expected");
-            message.cliDependencies = [];
-            for (var i = 0; i < object.cliDependencies.length; ++i)
-                message.cliDependencies[i] = String(object.cliDependencies[i]);
-        }
-        return message;
+        return $root.objectMapper.toMessage(object, new $root.Package(), $root.Package._getObjectMap());
     };
 
     /**
@@ -576,84 +639,7 @@ $root.Package = (function() {
     Package.toObject = function toObject(message, options) {
         if (!options)
             options = {};
-        var object = {};
-        if (options.arrays || options.defaults) {
-            object.keywords = [];
-            object.cliDependencies = [];
-        }
-        if (options.objects || options.defaults) {
-            object.bin = {};
-            object.scripts = {};
-            object.dependencies = {};
-            object.devDependencies = {};
-        }
-        if (options.defaults) {
-            object.name = "";
-            object.version = "";
-            object.description = "";
-            object.author = "";
-            object.license = "";
-            object.repository = null;
-            object.bugs = "";
-            object.homepage = "";
-            object.main = "";
-            object.types = "";
-            object.versionScheme = "";
-        }
-        if (message.name != null && message.hasOwnProperty("name"))
-            object.name = message.name;
-        if (message.version != null && message.hasOwnProperty("version"))
-            object.version = message.version;
-        if (message.description != null && message.hasOwnProperty("description"))
-            object.description = message.description;
-        if (message.author != null && message.hasOwnProperty("author"))
-            object.author = message.author;
-        if (message.license != null && message.hasOwnProperty("license"))
-            object.license = message.license;
-        if (message.repository != null && message.hasOwnProperty("repository"))
-            object.repository = $root.Package.Repository.toObject(message.repository, options);
-        if (message.bugs != null && message.hasOwnProperty("bugs"))
-            object.bugs = message.bugs;
-        if (message.homepage != null && message.hasOwnProperty("homepage"))
-            object.homepage = message.homepage;
-        if (message.keywords && message.keywords.length) {
-            object.keywords = [];
-            for (var j = 0; j < message.keywords.length; ++j)
-                object.keywords[j] = message.keywords[j];
-        }
-        if (message.main != null && message.hasOwnProperty("main"))
-            object.main = message.main;
-        var keys2;
-        if (message.bin && (keys2 = Object.keys(message.bin)).length) {
-            object.bin = {};
-            for (var j = 0; j < keys2.length; ++j)
-                object.bin[keys2[j]] = message.bin[keys2[j]];
-        }
-        if (message.scripts && (keys2 = Object.keys(message.scripts)).length) {
-            object.scripts = {};
-            for (var j = 0; j < keys2.length; ++j)
-                object.scripts[keys2[j]] = message.scripts[keys2[j]];
-        }
-        if (message.dependencies && (keys2 = Object.keys(message.dependencies)).length) {
-            object.dependencies = {};
-            for (var j = 0; j < keys2.length; ++j)
-                object.dependencies[keys2[j]] = message.dependencies[keys2[j]];
-        }
-        if (message.devDependencies && (keys2 = Object.keys(message.devDependencies)).length) {
-            object.devDependencies = {};
-            for (var j = 0; j < keys2.length; ++j)
-                object.devDependencies[keys2[j]] = message.devDependencies[keys2[j]];
-        }
-        if (message.types != null && message.hasOwnProperty("types"))
-            object.types = message.types;
-        if (message.cliDependencies && message.cliDependencies.length) {
-            object.cliDependencies = [];
-            for (var j = 0; j < message.cliDependencies.length; ++j)
-                object.cliDependencies[j] = message.cliDependencies[j];
-        }
-        if (message.versionScheme != null && message.hasOwnProperty("versionScheme"))
-            object.versionScheme = message.versionScheme;
-        return object;
+        return $root.objectMapper.toObject(message, options, $root.Package._getObjectMap());
     };
 
     /**
@@ -820,6 +806,37 @@ $root.Package = (function() {
         };
 
         /**
+         * Object mapper - array values are:
+         *   [
+         *     required field
+         *     repeated field
+         *     field type - (a)rray, (m)ap, (e)num, (s)calar
+         *     field name
+         *     JavaScript scalar type
+         *     enumById variable
+         *     enumByName variable
+         *   ]
+         */
+        Repository._getObjectMap = function _getObjectMap() {
+            return [
+                [
+                    0,
+                    0,
+                    "s",
+                    "type",
+                    "string"
+                ],
+                [
+                    0,
+                    0,
+                    "s",
+                    "url",
+                    "string"
+                ]
+            ];
+        };
+
+        /**
          * Creates a Repository message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
          * @memberof Package.Repository
@@ -830,12 +847,7 @@ $root.Package = (function() {
         Repository.fromObject = function fromObject(object) {
             if (object instanceof $root.Package.Repository)
                 return object;
-            var message = new $root.Package.Repository();
-            if (object.type != null)
-                message.type = String(object.type);
-            if (object.url != null)
-                message.url = String(object.url);
-            return message;
+            return $root.objectMapper.toMessage(object, new $root.Package.Repository(), $root.Package.Repository._getObjectMap());
         };
 
         /**
@@ -850,16 +862,7 @@ $root.Package = (function() {
         Repository.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
-            if (options.defaults) {
-                object.type = "";
-                object.url = "";
-            }
-            if (message.type != null && message.hasOwnProperty("type"))
-                object.type = message.type;
-            if (message.url != null && message.hasOwnProperty("url"))
-                object.url = message.url;
-            return object;
+            return $root.objectMapper.toObject(message, options, $root.Package.Repository._getObjectMap());
         };
 
         /**
@@ -878,5 +881,3 @@ $root.Package = (function() {
 
     return Package;
 })();
-
-module.exports = $root;

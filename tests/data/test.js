@@ -1,8 +1,3 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
-"use strict";
-
-var $protobuf = require("../../minimal");
-
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
@@ -143,6 +138,22 @@ $root.jspb = (function() {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            Empty._getObjectMap = function _getObjectMap() {
+                return [];
             };
 
             /**
@@ -340,6 +351,38 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            EnumContainer._getObjectMap = function _getObjectMap() {
+                var OuterEnumById = {
+                    1: "FOO",
+                    2: "BAR"
+                };
+                var OuterEnumByName = {
+                    FOO: 1,
+                    BAR: 2
+                };
+                return [[
+                        0,
+                        0,
+                        "e",
+                        "outerEnum",
+                        jspb.test.OuterEnum,
+                        OuterEnumById,
+                        OuterEnumByName
+                    ]];
+            };
+
+            /**
              * Creates an EnumContainer message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.EnumContainer
@@ -350,18 +393,7 @@ $root.jspb = (function() {
             EnumContainer.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.EnumContainer)
                     return object;
-                var message = new $root.jspb.test.EnumContainer();
-                switch (object.outerEnum) {
-                case "FOO":
-                case 1:
-                    message.outerEnum = 1;
-                    break;
-                case "BAR":
-                case 2:
-                    message.outerEnum = 2;
-                    break;
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.EnumContainer(), $root.jspb.test.EnumContainer._getObjectMap());
             };
 
             /**
@@ -376,12 +408,7 @@ $root.jspb = (function() {
             EnumContainer.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults)
-                    object.outerEnum = options.enums === String ? "FOO" : 1;
-                if (message.outerEnum != null && message.hasOwnProperty("outerEnum"))
-                    object.outerEnum = options.enums === String ? $root.jspb.test.OuterEnum[message.outerEnum] : message.outerEnum;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.EnumContainer._getObjectMap());
             };
 
             /**
@@ -576,6 +603,44 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            Simple1._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        1,
+                        0,
+                        "s",
+                        "aString",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "aRepeatedString",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "aBoolean",
+                        "boolean"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a Simple1 message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.Simple1
@@ -586,19 +651,7 @@ $root.jspb = (function() {
             Simple1.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.Simple1)
                     return object;
-                var message = new $root.jspb.test.Simple1();
-                if (object.aString != null)
-                    message.aString = String(object.aString);
-                if (object.aRepeatedString) {
-                    if (!Array.isArray(object.aRepeatedString))
-                        throw TypeError(".jspb.test.Simple1.aRepeatedString: array expected");
-                    message.aRepeatedString = [];
-                    for (var i = 0; i < object.aRepeatedString.length; ++i)
-                        message.aRepeatedString[i] = String(object.aRepeatedString[i]);
-                }
-                if (object.aBoolean != null)
-                    message.aBoolean = Boolean(object.aBoolean);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.Simple1(), $root.jspb.test.Simple1._getObjectMap());
             };
 
             /**
@@ -613,23 +666,7 @@ $root.jspb = (function() {
             Simple1.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.aRepeatedString = [];
-                if (options.defaults) {
-                    object.aString = "";
-                    object.aBoolean = false;
-                }
-                if (message.aString != null && message.hasOwnProperty("aString"))
-                    object.aString = message.aString;
-                if (message.aRepeatedString && message.aRepeatedString.length) {
-                    object.aRepeatedString = [];
-                    for (var j = 0; j < message.aRepeatedString.length; ++j)
-                        object.aRepeatedString[j] = message.aRepeatedString[j];
-                }
-                if (message.aBoolean != null && message.hasOwnProperty("aBoolean"))
-                    object.aBoolean = message.aBoolean;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.Simple1._getObjectMap());
             };
 
             /**
@@ -807,6 +844,37 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            Simple2._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        1,
+                        0,
+                        "s",
+                        "aString",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "aRepeatedString",
+                        "string"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a Simple2 message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.Simple2
@@ -817,17 +885,7 @@ $root.jspb = (function() {
             Simple2.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.Simple2)
                     return object;
-                var message = new $root.jspb.test.Simple2();
-                if (object.aString != null)
-                    message.aString = String(object.aString);
-                if (object.aRepeatedString) {
-                    if (!Array.isArray(object.aRepeatedString))
-                        throw TypeError(".jspb.test.Simple2.aRepeatedString: array expected");
-                    message.aRepeatedString = [];
-                    for (var i = 0; i < object.aRepeatedString.length; ++i)
-                        message.aRepeatedString[i] = String(object.aRepeatedString[i]);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.Simple2(), $root.jspb.test.Simple2._getObjectMap());
             };
 
             /**
@@ -842,19 +900,7 @@ $root.jspb = (function() {
             Simple2.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.aRepeatedString = [];
-                if (options.defaults)
-                    object.aString = "";
-                if (message.aString != null && message.hasOwnProperty("aString"))
-                    object.aString = message.aString;
-                if (message.aRepeatedString && message.aRepeatedString.length) {
-                    object.aRepeatedString = [];
-                    for (var j = 0; j < message.aRepeatedString.length; ++j)
-                        object.aRepeatedString[j] = message.aRepeatedString[j];
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.Simple2._getObjectMap());
             };
 
             /**
@@ -1058,6 +1104,51 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            SpecialCases._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        1,
+                        0,
+                        "s",
+                        "normal",
+                        "string"
+                    ],
+                    [
+                        1,
+                        0,
+                        "s",
+                        "\"default\"]",
+                        "string"
+                    ],
+                    [
+                        1,
+                        0,
+                        "s",
+                        "\"function\"]",
+                        "string"
+                    ],
+                    [
+                        1,
+                        0,
+                        "s",
+                        "\"var\"]",
+                        "string"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a SpecialCases message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.SpecialCases
@@ -1068,16 +1159,7 @@ $root.jspb = (function() {
             SpecialCases.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.SpecialCases)
                     return object;
-                var message = new $root.jspb.test.SpecialCases();
-                if (object.normal != null)
-                    message.normal = String(object.normal);
-                if (object["default"] != null)
-                    message["default"] = String(object["default"]);
-                if (object["function"] != null)
-                    message["function"] = String(object["function"]);
-                if (object["var"] != null)
-                    message["var"] = String(object["var"]);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.SpecialCases(), $root.jspb.test.SpecialCases._getObjectMap());
             };
 
             /**
@@ -1092,22 +1174,7 @@ $root.jspb = (function() {
             SpecialCases.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.normal = "";
-                    object["default"] = "";
-                    object["function"] = "";
-                    object["var"] = "";
-                }
-                if (message.normal != null && message.hasOwnProperty("normal"))
-                    object.normal = message.normal;
-                if (message["default"] != null && message.hasOwnProperty("default"))
-                    object["default"] = message["default"];
-                if (message["function"] != null && message.hasOwnProperty("function"))
-                    object["function"] = message["function"];
-                if (message["var"] != null && message.hasOwnProperty("var"))
-                    object["var"] = message["var"];
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.SpecialCases._getObjectMap());
             };
 
             /**
@@ -1332,7 +1399,7 @@ $root.jspb = (function() {
                     if (!Array.isArray(message.aRepeatedMessage))
                         return "aRepeatedMessage: array expected";
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        error = $root.jspb.test.OptionalFields.Nested.verify(message.aRepeatedMessage[i]);
+                        var error = $root.jspb.test.OptionalFields.Nested.verify(message.aRepeatedMessage[i]);
                         if (error)
                             return "aRepeatedMessage." + error;
                     }
@@ -1348,6 +1415,58 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            OptionalFields._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "aString",
+                        "string"
+                    ],
+                    [
+                        1,
+                        0,
+                        "s",
+                        "aBool",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "Nested",
+                        "aNestedMessage",
+                        "jspb.test.OptionalFields.INested"
+                    ],
+                    [
+                        0,
+                        1,
+                        "Nested",
+                        "aRepeatedMessage",
+                        "jspb.test.OptionalFields.INested"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "aRepeatedString",
+                        "string"
+                    ]
+                ];
+            };
+
+            /**
              * Creates an OptionalFields message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.OptionalFields
@@ -1358,34 +1477,7 @@ $root.jspb = (function() {
             OptionalFields.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.OptionalFields)
                     return object;
-                var message = new $root.jspb.test.OptionalFields();
-                if (object.aString != null)
-                    message.aString = String(object.aString);
-                if (object.aBool != null)
-                    message.aBool = Boolean(object.aBool);
-                if (object.aNestedMessage != null) {
-                    if (typeof object.aNestedMessage !== "object")
-                        throw TypeError(".jspb.test.OptionalFields.aNestedMessage: object expected");
-                    message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.fromObject(object.aNestedMessage);
-                }
-                if (object.aRepeatedMessage) {
-                    if (!Array.isArray(object.aRepeatedMessage))
-                        throw TypeError(".jspb.test.OptionalFields.aRepeatedMessage: array expected");
-                    message.aRepeatedMessage = [];
-                    for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
-                        if (typeof object.aRepeatedMessage[i] !== "object")
-                            throw TypeError(".jspb.test.OptionalFields.aRepeatedMessage: object expected");
-                        message.aRepeatedMessage[i] = $root.jspb.test.OptionalFields.Nested.fromObject(object.aRepeatedMessage[i]);
-                    }
-                }
-                if (object.aRepeatedString) {
-                    if (!Array.isArray(object.aRepeatedString))
-                        throw TypeError(".jspb.test.OptionalFields.aRepeatedString: array expected");
-                    message.aRepeatedString = [];
-                    for (var i = 0; i < object.aRepeatedString.length; ++i)
-                        message.aRepeatedString[i] = String(object.aRepeatedString[i]);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.OptionalFields(), $root.jspb.test.OptionalFields._getObjectMap());
             };
 
             /**
@@ -1400,33 +1492,7 @@ $root.jspb = (function() {
             OptionalFields.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults) {
-                    object.aRepeatedMessage = [];
-                    object.aRepeatedString = [];
-                }
-                if (options.defaults) {
-                    object.aString = "";
-                    object.aBool = false;
-                    object.aNestedMessage = null;
-                }
-                if (message.aString != null && message.hasOwnProperty("aString"))
-                    object.aString = message.aString;
-                if (message.aBool != null && message.hasOwnProperty("aBool"))
-                    object.aBool = message.aBool;
-                if (message.aNestedMessage != null && message.hasOwnProperty("aNestedMessage"))
-                    object.aNestedMessage = $root.jspb.test.OptionalFields.Nested.toObject(message.aNestedMessage, options);
-                if (message.aRepeatedMessage && message.aRepeatedMessage.length) {
-                    object.aRepeatedMessage = [];
-                    for (var j = 0; j < message.aRepeatedMessage.length; ++j)
-                        object.aRepeatedMessage[j] = $root.jspb.test.OptionalFields.Nested.toObject(message.aRepeatedMessage[j], options);
-                }
-                if (message.aRepeatedString && message.aRepeatedString.length) {
-                    object.aRepeatedString = [];
-                    for (var j = 0; j < message.aRepeatedString.length; ++j)
-                        object.aRepeatedString[j] = message.aRepeatedString[j];
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.OptionalFields._getObjectMap());
             };
 
             /**
@@ -1576,6 +1642,28 @@ $root.jspb = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                Nested._getObjectMap = function _getObjectMap() {
+                    return [[
+                            0,
+                            0,
+                            "s",
+                            "anInt",
+                            "number"
+                        ]];
+                };
+
+                /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof jspb.test.OptionalFields.Nested
@@ -1586,10 +1674,7 @@ $root.jspb = (function() {
                 Nested.fromObject = function fromObject(object) {
                     if (object instanceof $root.jspb.test.OptionalFields.Nested)
                         return object;
-                    var message = new $root.jspb.test.OptionalFields.Nested();
-                    if (object.anInt != null)
-                        message.anInt = object.anInt | 0;
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.jspb.test.OptionalFields.Nested(), $root.jspb.test.OptionalFields.Nested._getObjectMap());
                 };
 
                 /**
@@ -1604,12 +1689,7 @@ $root.jspb = (function() {
                 Nested.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.defaults)
-                        object.anInt = 0;
-                    if (message.anInt != null && message.hasOwnProperty("anInt"))
-                        object.anInt = message.anInt;
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.jspb.test.OptionalFields.Nested._getObjectMap());
                 };
 
                 /**
@@ -1893,7 +1973,7 @@ $root.jspb = (function() {
                         return ".jspb.test.IsExtension.extField." + error;
                 }
                 if (message[".jspb.test.IndirectExtension.simple"] != null && message.hasOwnProperty(".jspb.test.IndirectExtension.simple")) {
-                    error = $root.jspb.test.Simple1.verify(message[".jspb.test.IndirectExtension.simple"]);
+                    var error = $root.jspb.test.Simple1.verify(message[".jspb.test.IndirectExtension.simple"]);
                     if (error)
                         return ".jspb.test.IndirectExtension.simple." + error;
                 }
@@ -1911,17 +1991,97 @@ $root.jspb = (function() {
                     if (!Array.isArray(message[".jspb.test.IndirectExtension.repeatedSimple"]))
                         return ".jspb.test.IndirectExtension.repeatedSimple: array expected";
                     for (var i = 0; i < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
-                        error = $root.jspb.test.Simple1.verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]);
+                        var error = $root.jspb.test.Simple1.verify(message[".jspb.test.IndirectExtension.repeatedSimple"][i]);
                         if (error)
                             return ".jspb.test.IndirectExtension.repeatedSimple." + error;
                     }
                 }
                 if (message[".jspb.test.simple1"] != null && message.hasOwnProperty(".jspb.test.simple1")) {
-                    error = $root.jspb.test.Simple1.verify(message[".jspb.test.simple1"]);
+                    var error = $root.jspb.test.Simple1.verify(message[".jspb.test.simple1"]);
                     if (error)
                         return ".jspb.test.simple1." + error;
                 }
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            HasExtensions._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "str1",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "str2",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "str3",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "IsExtension",
+                        "\".jspb.test.IsExtension.extField\"]",
+                        "jspb.test.IIsExtension"
+                    ],
+                    [
+                        0,
+                        0,
+                        "Simple1",
+                        "\".jspb.test.IndirectExtension.simple\"]",
+                        "jspb.test.ISimple1"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "\".jspb.test.IndirectExtension.str\"]",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "\".jspb.test.IndirectExtension.repeatedStr\"]",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "Simple1",
+                        "\".jspb.test.IndirectExtension.repeatedSimple\"]",
+                        "jspb.test.ISimple1"
+                    ],
+                    [
+                        0,
+                        0,
+                        "Simple1",
+                        "\".jspb.test.simple1\"]",
+                        "jspb.test.ISimple1"
+                    ]
+                ];
             };
 
             /**
@@ -1935,48 +2095,7 @@ $root.jspb = (function() {
             HasExtensions.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.HasExtensions)
                     return object;
-                var message = new $root.jspb.test.HasExtensions();
-                if (object.str1 != null)
-                    message.str1 = String(object.str1);
-                if (object.str2 != null)
-                    message.str2 = String(object.str2);
-                if (object.str3 != null)
-                    message.str3 = String(object.str3);
-                if (object[".jspb.test.IsExtension.extField"] != null) {
-                    if (typeof object[".jspb.test.IsExtension.extField"] !== "object")
-                        throw TypeError(".jspb.test.HasExtensions..jspb.test.IsExtension.extField: object expected");
-                    message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.fromObject(object[".jspb.test.IsExtension.extField"]);
-                }
-                if (object[".jspb.test.IndirectExtension.simple"] != null) {
-                    if (typeof object[".jspb.test.IndirectExtension.simple"] !== "object")
-                        throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.simple: object expected");
-                    message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.fromObject(object[".jspb.test.IndirectExtension.simple"]);
-                }
-                if (object[".jspb.test.IndirectExtension.str"] != null)
-                    message[".jspb.test.IndirectExtension.str"] = String(object[".jspb.test.IndirectExtension.str"]);
-                if (object[".jspb.test.IndirectExtension.repeatedStr"]) {
-                    if (!Array.isArray(object[".jspb.test.IndirectExtension.repeatedStr"]))
-                        throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedStr: array expected");
-                    message[".jspb.test.IndirectExtension.repeatedStr"] = [];
-                    for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedStr"].length; ++i)
-                        message[".jspb.test.IndirectExtension.repeatedStr"][i] = String(object[".jspb.test.IndirectExtension.repeatedStr"][i]);
-                }
-                if (object[".jspb.test.IndirectExtension.repeatedSimple"]) {
-                    if (!Array.isArray(object[".jspb.test.IndirectExtension.repeatedSimple"]))
-                        throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple: array expected");
-                    message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
-                    for (var i = 0; i < object[".jspb.test.IndirectExtension.repeatedSimple"].length; ++i) {
-                        if (typeof object[".jspb.test.IndirectExtension.repeatedSimple"][i] !== "object")
-                            throw TypeError(".jspb.test.HasExtensions..jspb.test.IndirectExtension.repeatedSimple: object expected");
-                        message[".jspb.test.IndirectExtension.repeatedSimple"][i] = $root.jspb.test.Simple1.fromObject(object[".jspb.test.IndirectExtension.repeatedSimple"][i]);
-                    }
-                }
-                if (object[".jspb.test.simple1"] != null) {
-                    if (typeof object[".jspb.test.simple1"] !== "object")
-                        throw TypeError(".jspb.test.HasExtensions..jspb.test.simple1: object expected");
-                    message[".jspb.test.simple1"] = $root.jspb.test.Simple1.fromObject(object[".jspb.test.simple1"]);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.HasExtensions(), $root.jspb.test.HasExtensions._getObjectMap());
             };
 
             /**
@@ -1991,45 +2110,7 @@ $root.jspb = (function() {
             HasExtensions.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults) {
-                    object[".jspb.test.IndirectExtension.repeatedStr"] = [];
-                    object[".jspb.test.IndirectExtension.repeatedSimple"] = [];
-                }
-                if (options.defaults) {
-                    object.str1 = "";
-                    object.str2 = "";
-                    object.str3 = "";
-                    object[".jspb.test.IsExtension.extField"] = null;
-                    object[".jspb.test.IndirectExtension.simple"] = null;
-                    object[".jspb.test.IndirectExtension.str"] = "";
-                    object[".jspb.test.simple1"] = null;
-                }
-                if (message.str1 != null && message.hasOwnProperty("str1"))
-                    object.str1 = message.str1;
-                if (message.str2 != null && message.hasOwnProperty("str2"))
-                    object.str2 = message.str2;
-                if (message.str3 != null && message.hasOwnProperty("str3"))
-                    object.str3 = message.str3;
-                if (message[".jspb.test.IsExtension.extField"] != null && message.hasOwnProperty(".jspb.test.IsExtension.extField"))
-                    object[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.toObject(message[".jspb.test.IsExtension.extField"], options);
-                if (message[".jspb.test.IndirectExtension.simple"] != null && message.hasOwnProperty(".jspb.test.IndirectExtension.simple"))
-                    object[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.toObject(message[".jspb.test.IndirectExtension.simple"], options);
-                if (message[".jspb.test.IndirectExtension.str"] != null && message.hasOwnProperty(".jspb.test.IndirectExtension.str"))
-                    object[".jspb.test.IndirectExtension.str"] = message[".jspb.test.IndirectExtension.str"];
-                if (message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length) {
-                    object[".jspb.test.IndirectExtension.repeatedStr"] = [];
-                    for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedStr"].length; ++j)
-                        object[".jspb.test.IndirectExtension.repeatedStr"][j] = message[".jspb.test.IndirectExtension.repeatedStr"][j];
-                }
-                if (message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length) {
-                    object[".jspb.test.IndirectExtension.repeatedSimple"] = [];
-                    for (var j = 0; j < message[".jspb.test.IndirectExtension.repeatedSimple"].length; ++j)
-                        object[".jspb.test.IndirectExtension.repeatedSimple"][j] = $root.jspb.test.Simple1.toObject(message[".jspb.test.IndirectExtension.repeatedSimple"][j], options);
-                }
-                if (message[".jspb.test.simple1"] != null && message.hasOwnProperty(".jspb.test.simple1"))
-                    object[".jspb.test.simple1"] = $root.jspb.test.Simple1.toObject(message[".jspb.test.simple1"], options);
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.HasExtensions._getObjectMap());
             };
 
             /**
@@ -2254,7 +2335,7 @@ $root.jspb = (function() {
                     if (!Array.isArray(message.aRepeatedMessage))
                         return "aRepeatedMessage: array expected";
                     for (var i = 0; i < message.aRepeatedMessage.length; ++i) {
-                        error = $root.jspb.test.Complex.Nested.verify(message.aRepeatedMessage[i]);
+                        var error = $root.jspb.test.Complex.Nested.verify(message.aRepeatedMessage[i]);
                         if (error)
                             return "aRepeatedMessage." + error;
                     }
@@ -2270,6 +2351,58 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            Complex._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        1,
+                        0,
+                        "s",
+                        "aString",
+                        "string"
+                    ],
+                    [
+                        1,
+                        0,
+                        "s",
+                        "anOutOfOrderBool",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "Nested",
+                        "aNestedMessage",
+                        "jspb.test.Complex.INested"
+                    ],
+                    [
+                        0,
+                        1,
+                        "Nested",
+                        "aRepeatedMessage",
+                        "jspb.test.Complex.INested"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "aRepeatedString",
+                        "string"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a Complex message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.Complex
@@ -2280,34 +2413,7 @@ $root.jspb = (function() {
             Complex.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.Complex)
                     return object;
-                var message = new $root.jspb.test.Complex();
-                if (object.aString != null)
-                    message.aString = String(object.aString);
-                if (object.anOutOfOrderBool != null)
-                    message.anOutOfOrderBool = Boolean(object.anOutOfOrderBool);
-                if (object.aNestedMessage != null) {
-                    if (typeof object.aNestedMessage !== "object")
-                        throw TypeError(".jspb.test.Complex.aNestedMessage: object expected");
-                    message.aNestedMessage = $root.jspb.test.Complex.Nested.fromObject(object.aNestedMessage);
-                }
-                if (object.aRepeatedMessage) {
-                    if (!Array.isArray(object.aRepeatedMessage))
-                        throw TypeError(".jspb.test.Complex.aRepeatedMessage: array expected");
-                    message.aRepeatedMessage = [];
-                    for (var i = 0; i < object.aRepeatedMessage.length; ++i) {
-                        if (typeof object.aRepeatedMessage[i] !== "object")
-                            throw TypeError(".jspb.test.Complex.aRepeatedMessage: object expected");
-                        message.aRepeatedMessage[i] = $root.jspb.test.Complex.Nested.fromObject(object.aRepeatedMessage[i]);
-                    }
-                }
-                if (object.aRepeatedString) {
-                    if (!Array.isArray(object.aRepeatedString))
-                        throw TypeError(".jspb.test.Complex.aRepeatedString: array expected");
-                    message.aRepeatedString = [];
-                    for (var i = 0; i < object.aRepeatedString.length; ++i)
-                        message.aRepeatedString[i] = String(object.aRepeatedString[i]);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.Complex(), $root.jspb.test.Complex._getObjectMap());
             };
 
             /**
@@ -2322,33 +2428,7 @@ $root.jspb = (function() {
             Complex.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults) {
-                    object.aRepeatedMessage = [];
-                    object.aRepeatedString = [];
-                }
-                if (options.defaults) {
-                    object.aString = "";
-                    object.aNestedMessage = null;
-                    object.anOutOfOrderBool = false;
-                }
-                if (message.aString != null && message.hasOwnProperty("aString"))
-                    object.aString = message.aString;
-                if (message.aNestedMessage != null && message.hasOwnProperty("aNestedMessage"))
-                    object.aNestedMessage = $root.jspb.test.Complex.Nested.toObject(message.aNestedMessage, options);
-                if (message.aRepeatedMessage && message.aRepeatedMessage.length) {
-                    object.aRepeatedMessage = [];
-                    for (var j = 0; j < message.aRepeatedMessage.length; ++j)
-                        object.aRepeatedMessage[j] = $root.jspb.test.Complex.Nested.toObject(message.aRepeatedMessage[j], options);
-                }
-                if (message.aRepeatedString && message.aRepeatedString.length) {
-                    object.aRepeatedString = [];
-                    for (var j = 0; j < message.aRepeatedString.length; ++j)
-                        object.aRepeatedString[j] = message.aRepeatedString[j];
-                }
-                if (message.anOutOfOrderBool != null && message.hasOwnProperty("anOutOfOrderBool"))
-                    object.anOutOfOrderBool = message.anOutOfOrderBool;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.Complex._getObjectMap());
             };
 
             /**
@@ -2498,6 +2578,28 @@ $root.jspb = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                Nested._getObjectMap = function _getObjectMap() {
+                    return [[
+                            1,
+                            0,
+                            "s",
+                            "anInt",
+                            "number"
+                        ]];
+                };
+
+                /**
                  * Creates a Nested message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof jspb.test.Complex.Nested
@@ -2508,10 +2610,7 @@ $root.jspb = (function() {
                 Nested.fromObject = function fromObject(object) {
                     if (object instanceof $root.jspb.test.Complex.Nested)
                         return object;
-                    var message = new $root.jspb.test.Complex.Nested();
-                    if (object.anInt != null)
-                        message.anInt = object.anInt | 0;
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.jspb.test.Complex.Nested(), $root.jspb.test.Complex.Nested._getObjectMap());
                 };
 
                 /**
@@ -2526,12 +2625,7 @@ $root.jspb = (function() {
                 Nested.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.defaults)
-                        object.anInt = 0;
-                    if (message.anInt != null && message.hasOwnProperty("anInt"))
-                        object.anInt = message.anInt;
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.jspb.test.Complex.Nested._getObjectMap());
                 };
 
                 /**
@@ -2667,6 +2761,22 @@ $root.jspb = (function() {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            OuterMessage._getObjectMap = function _getObjectMap() {
+                return [];
             };
 
             /**
@@ -2843,6 +2953,28 @@ $root.jspb = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                Complex._getObjectMap = function _getObjectMap() {
+                    return [[
+                            0,
+                            0,
+                            "s",
+                            "innerComplexField",
+                            "number"
+                        ]];
+                };
+
+                /**
                  * Creates a Complex message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof jspb.test.OuterMessage.Complex
@@ -2853,10 +2985,7 @@ $root.jspb = (function() {
                 Complex.fromObject = function fromObject(object) {
                     if (object instanceof $root.jspb.test.OuterMessage.Complex)
                         return object;
-                    var message = new $root.jspb.test.OuterMessage.Complex();
-                    if (object.innerComplexField != null)
-                        message.innerComplexField = object.innerComplexField | 0;
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.jspb.test.OuterMessage.Complex(), $root.jspb.test.OuterMessage.Complex._getObjectMap());
                 };
 
                 /**
@@ -2871,12 +3000,7 @@ $root.jspb = (function() {
                 Complex.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.defaults)
-                        object.innerComplexField = 0;
-                    if (message.innerComplexField != null && message.hasOwnProperty("innerComplexField"))
-                        object.innerComplexField = message.innerComplexField;
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.jspb.test.OuterMessage.Complex._getObjectMap());
                 };
 
                 /**
@@ -3032,6 +3156,28 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            IsExtension._getObjectMap = function _getObjectMap() {
+                return [[
+                        0,
+                        0,
+                        "s",
+                        "ext1",
+                        "string"
+                    ]];
+            };
+
+            /**
              * Creates an IsExtension message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.IsExtension
@@ -3042,10 +3188,7 @@ $root.jspb = (function() {
             IsExtension.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.IsExtension)
                     return object;
-                var message = new $root.jspb.test.IsExtension();
-                if (object.ext1 != null)
-                    message.ext1 = String(object.ext1);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.IsExtension(), $root.jspb.test.IsExtension._getObjectMap());
             };
 
             /**
@@ -3060,12 +3203,7 @@ $root.jspb = (function() {
             IsExtension.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults)
-                    object.ext1 = "";
-                if (message.ext1 != null && message.hasOwnProperty("ext1"))
-                    object.ext1 = message.ext1;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.IsExtension._getObjectMap());
             };
 
             /**
@@ -3198,6 +3336,22 @@ $root.jspb = (function() {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            IndirectExtension._getObjectMap = function _getObjectMap() {
+                return [];
             };
 
             /**
@@ -3467,6 +3621,75 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            DefaultValues._getObjectMap = function _getObjectMap() {
+                var EnumById = {
+                    13: "E1",
+                    77: "E2"
+                };
+                var EnumByName = {
+                    E1: 13,
+                    E2: 77
+                };
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "stringField",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "boolField",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "intField",
+                        "number|Long"
+                    ],
+                    [
+                        0,
+                        0,
+                        "e",
+                        "enumField",
+                        jspb.test.DefaultValues.Enum,
+                        EnumById,
+                        EnumByName
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "emptyField",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "a",
+                        "bytesField",
+                        "Uint8Array"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a DefaultValues message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.DefaultValues
@@ -3477,38 +3700,7 @@ $root.jspb = (function() {
             DefaultValues.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.DefaultValues)
                     return object;
-                var message = new $root.jspb.test.DefaultValues();
-                if (object.stringField != null)
-                    message.stringField = String(object.stringField);
-                if (object.boolField != null)
-                    message.boolField = Boolean(object.boolField);
-                if (object.intField != null)
-                    if ($util.Long)
-                        (message.intField = $util.Long.fromValue(object.intField)).unsigned = false;
-                    else if (typeof object.intField === "string")
-                        message.intField = parseInt(object.intField, 10);
-                    else if (typeof object.intField === "number")
-                        message.intField = object.intField;
-                    else if (typeof object.intField === "object")
-                        message.intField = new $util.LongBits(object.intField.low >>> 0, object.intField.high >>> 0).toNumber();
-                switch (object.enumField) {
-                case "E1":
-                case 13:
-                    message.enumField = 13;
-                    break;
-                case "E2":
-                case 77:
-                    message.enumField = 77;
-                    break;
-                }
-                if (object.emptyField != null)
-                    message.emptyField = String(object.emptyField);
-                if (object.bytesField != null)
-                    if (typeof object.bytesField === "string")
-                        $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField.length)
-                        message.bytesField = object.bytesField;
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.DefaultValues(), $root.jspb.test.DefaultValues._getObjectMap());
             };
 
             /**
@@ -3523,39 +3715,7 @@ $root.jspb = (function() {
             DefaultValues.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.stringField = "default<>abc";
-                    object.boolField = true;
-                    if ($util.Long) {
-                        var long = new $util.Long(11, 0, false);
-                        object.intField = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.intField = options.longs === String ? "11" : 11;
-                    object.enumField = options.enums === String ? "E1" : 13;
-                    object.emptyField = "";
-                    object.bytesField = options.bytes === String ? "moo" : [
-                        109,
-                        111,
-                        111
-                    ];
-                }
-                if (message.stringField != null && message.hasOwnProperty("stringField"))
-                    object.stringField = message.stringField;
-                if (message.boolField != null && message.hasOwnProperty("boolField"))
-                    object.boolField = message.boolField;
-                if (message.intField != null && message.hasOwnProperty("intField"))
-                    if (typeof message.intField === "number")
-                        object.intField = options.longs === String ? String(message.intField) : message.intField;
-                    else
-                        object.intField = options.longs === String ? $util.Long.prototype.toString.call(message.intField) : options.longs === Number ? new $util.LongBits(message.intField.low >>> 0, message.intField.high >>> 0).toNumber() : message.intField;
-                if (message.enumField != null && message.hasOwnProperty("enumField"))
-                    object.enumField = options.enums === String ? $root.jspb.test.DefaultValues.Enum[message.enumField] : message.enumField;
-                if (message.emptyField != null && message.hasOwnProperty("emptyField"))
-                    object.emptyField = message.emptyField;
-                if (message.bytesField != null && message.hasOwnProperty("bytesField"))
-                    object.bytesField = options.bytes === String ? $util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.DefaultValues._getObjectMap());
             };
 
             /**
@@ -3866,6 +4026,79 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            FloatingPointFields._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "optionalFloatField",
+                        "number"
+                    ],
+                    [
+                        1,
+                        0,
+                        "s",
+                        "requiredFloatField",
+                        "number"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "repeatedFloatField",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "defaultFloatField",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "optionalDoubleField",
+                        "number"
+                    ],
+                    [
+                        1,
+                        0,
+                        "s",
+                        "requiredDoubleField",
+                        "number"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "repeatedDoubleField",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "defaultDoubleField",
+                        "number"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a FloatingPointFields message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.FloatingPointFields
@@ -3876,34 +4109,7 @@ $root.jspb = (function() {
             FloatingPointFields.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.FloatingPointFields)
                     return object;
-                var message = new $root.jspb.test.FloatingPointFields();
-                if (object.optionalFloatField != null)
-                    message.optionalFloatField = Number(object.optionalFloatField);
-                if (object.requiredFloatField != null)
-                    message.requiredFloatField = Number(object.requiredFloatField);
-                if (object.repeatedFloatField) {
-                    if (!Array.isArray(object.repeatedFloatField))
-                        throw TypeError(".jspb.test.FloatingPointFields.repeatedFloatField: array expected");
-                    message.repeatedFloatField = [];
-                    for (var i = 0; i < object.repeatedFloatField.length; ++i)
-                        message.repeatedFloatField[i] = Number(object.repeatedFloatField[i]);
-                }
-                if (object.defaultFloatField != null)
-                    message.defaultFloatField = Number(object.defaultFloatField);
-                if (object.optionalDoubleField != null)
-                    message.optionalDoubleField = Number(object.optionalDoubleField);
-                if (object.requiredDoubleField != null)
-                    message.requiredDoubleField = Number(object.requiredDoubleField);
-                if (object.repeatedDoubleField) {
-                    if (!Array.isArray(object.repeatedDoubleField))
-                        throw TypeError(".jspb.test.FloatingPointFields.repeatedDoubleField: array expected");
-                    message.repeatedDoubleField = [];
-                    for (var i = 0; i < object.repeatedDoubleField.length; ++i)
-                        message.repeatedDoubleField[i] = Number(object.repeatedDoubleField[i]);
-                }
-                if (object.defaultDoubleField != null)
-                    message.defaultDoubleField = Number(object.defaultDoubleField);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.FloatingPointFields(), $root.jspb.test.FloatingPointFields._getObjectMap());
             };
 
             /**
@@ -3918,42 +4124,7 @@ $root.jspb = (function() {
             FloatingPointFields.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults) {
-                    object.repeatedFloatField = [];
-                    object.repeatedDoubleField = [];
-                }
-                if (options.defaults) {
-                    object.optionalFloatField = 0;
-                    object.requiredFloatField = 0;
-                    object.defaultFloatField = 2;
-                    object.optionalDoubleField = 0;
-                    object.requiredDoubleField = 0;
-                    object.defaultDoubleField = 2;
-                }
-                if (message.optionalFloatField != null && message.hasOwnProperty("optionalFloatField"))
-                    object.optionalFloatField = options.json && !isFinite(message.optionalFloatField) ? String(message.optionalFloatField) : message.optionalFloatField;
-                if (message.requiredFloatField != null && message.hasOwnProperty("requiredFloatField"))
-                    object.requiredFloatField = options.json && !isFinite(message.requiredFloatField) ? String(message.requiredFloatField) : message.requiredFloatField;
-                if (message.repeatedFloatField && message.repeatedFloatField.length) {
-                    object.repeatedFloatField = [];
-                    for (var j = 0; j < message.repeatedFloatField.length; ++j)
-                        object.repeatedFloatField[j] = options.json && !isFinite(message.repeatedFloatField[j]) ? String(message.repeatedFloatField[j]) : message.repeatedFloatField[j];
-                }
-                if (message.defaultFloatField != null && message.hasOwnProperty("defaultFloatField"))
-                    object.defaultFloatField = options.json && !isFinite(message.defaultFloatField) ? String(message.defaultFloatField) : message.defaultFloatField;
-                if (message.optionalDoubleField != null && message.hasOwnProperty("optionalDoubleField"))
-                    object.optionalDoubleField = options.json && !isFinite(message.optionalDoubleField) ? String(message.optionalDoubleField) : message.optionalDoubleField;
-                if (message.requiredDoubleField != null && message.hasOwnProperty("requiredDoubleField"))
-                    object.requiredDoubleField = options.json && !isFinite(message.requiredDoubleField) ? String(message.requiredDoubleField) : message.requiredDoubleField;
-                if (message.repeatedDoubleField && message.repeatedDoubleField.length) {
-                    object.repeatedDoubleField = [];
-                    for (var j = 0; j < message.repeatedDoubleField.length; ++j)
-                        object.repeatedDoubleField[j] = options.json && !isFinite(message.repeatedDoubleField[j]) ? String(message.repeatedDoubleField[j]) : message.repeatedDoubleField[j];
-                }
-                if (message.defaultDoubleField != null && message.hasOwnProperty("defaultDoubleField"))
-                    object.defaultDoubleField = options.json && !isFinite(message.defaultDoubleField) ? String(message.defaultDoubleField) : message.defaultDoubleField;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.FloatingPointFields._getObjectMap());
             };
 
             /**
@@ -4185,7 +4356,7 @@ $root.jspb = (function() {
                     if (!Array.isArray(message.simple2))
                         return "simple2: array expected";
                     for (var i = 0; i < message.simple2.length; ++i) {
-                        error = $root.jspb.test.Simple1.verify(message.simple2[i]);
+                        var error = $root.jspb.test.Simple1.verify(message.simple2[i]);
                         if (error)
                             return "simple2." + error;
                     }
@@ -4197,11 +4368,70 @@ $root.jspb = (function() {
                     if (!$util.isString(message.unused))
                         return "unused: string expected";
                 if (message[".jspb.test.CloneExtension.extField"] != null && message.hasOwnProperty(".jspb.test.CloneExtension.extField")) {
-                    error = $root.jspb.test.CloneExtension.verify(message[".jspb.test.CloneExtension.extField"]);
+                    var error = $root.jspb.test.CloneExtension.verify(message[".jspb.test.CloneExtension.extField"]);
                     if (error)
                         return ".jspb.test.CloneExtension.extField." + error;
                 }
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            TestClone._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "str",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "Simple1",
+                        "simple1",
+                        "jspb.test.ISimple1"
+                    ],
+                    [
+                        0,
+                        1,
+                        "Simple1",
+                        "simple2",
+                        "jspb.test.ISimple1"
+                    ],
+                    [
+                        0,
+                        0,
+                        "a",
+                        "bytesField",
+                        "Uint8Array"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "unused",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "CloneExtension",
+                        "\".jspb.test.CloneExtension.extField\"]",
+                        "jspb.test.ICloneExtension"
+                    ]
+                ];
             };
 
             /**
@@ -4215,37 +4445,7 @@ $root.jspb = (function() {
             TestClone.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.TestClone)
                     return object;
-                var message = new $root.jspb.test.TestClone();
-                if (object.str != null)
-                    message.str = String(object.str);
-                if (object.simple1 != null) {
-                    if (typeof object.simple1 !== "object")
-                        throw TypeError(".jspb.test.TestClone.simple1: object expected");
-                    message.simple1 = $root.jspb.test.Simple1.fromObject(object.simple1);
-                }
-                if (object.simple2) {
-                    if (!Array.isArray(object.simple2))
-                        throw TypeError(".jspb.test.TestClone.simple2: array expected");
-                    message.simple2 = [];
-                    for (var i = 0; i < object.simple2.length; ++i) {
-                        if (typeof object.simple2[i] !== "object")
-                            throw TypeError(".jspb.test.TestClone.simple2: object expected");
-                        message.simple2[i] = $root.jspb.test.Simple1.fromObject(object.simple2[i]);
-                    }
-                }
-                if (object.bytesField != null)
-                    if (typeof object.bytesField === "string")
-                        $util.base64.decode(object.bytesField, message.bytesField = $util.newBuffer($util.base64.length(object.bytesField)), 0);
-                    else if (object.bytesField.length)
-                        message.bytesField = object.bytesField;
-                if (object.unused != null)
-                    message.unused = String(object.unused);
-                if (object[".jspb.test.CloneExtension.extField"] != null) {
-                    if (typeof object[".jspb.test.CloneExtension.extField"] !== "object")
-                        throw TypeError(".jspb.test.TestClone..jspb.test.CloneExtension.extField: object expected");
-                    message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.fromObject(object[".jspb.test.CloneExtension.extField"]);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.TestClone(), $root.jspb.test.TestClone._getObjectMap());
             };
 
             /**
@@ -4260,32 +4460,7 @@ $root.jspb = (function() {
             TestClone.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.simple2 = [];
-                if (options.defaults) {
-                    object.str = "";
-                    object.simple1 = null;
-                    object.bytesField = options.bytes === String ? "" : [];
-                    object.unused = "";
-                    object[".jspb.test.CloneExtension.extField"] = null;
-                }
-                if (message.str != null && message.hasOwnProperty("str"))
-                    object.str = message.str;
-                if (message.simple1 != null && message.hasOwnProperty("simple1"))
-                    object.simple1 = $root.jspb.test.Simple1.toObject(message.simple1, options);
-                if (message.simple2 && message.simple2.length) {
-                    object.simple2 = [];
-                    for (var j = 0; j < message.simple2.length; ++j)
-                        object.simple2[j] = $root.jspb.test.Simple1.toObject(message.simple2[j], options);
-                }
-                if (message.bytesField != null && message.hasOwnProperty("bytesField"))
-                    object.bytesField = options.bytes === String ? $util.base64.encode(message.bytesField, 0, message.bytesField.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesField) : message.bytesField;
-                if (message.unused != null && message.hasOwnProperty("unused"))
-                    object.unused = message.unused;
-                if (message[".jspb.test.CloneExtension.extField"] != null && message.hasOwnProperty(".jspb.test.CloneExtension.extField"))
-                    object[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.toObject(message[".jspb.test.CloneExtension.extField"], options);
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.TestClone._getObjectMap());
             };
 
             /**
@@ -4438,6 +4613,28 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            CloneExtension._getObjectMap = function _getObjectMap() {
+                return [[
+                        0,
+                        0,
+                        "s",
+                        "ext",
+                        "string"
+                    ]];
+            };
+
+            /**
              * Creates a CloneExtension message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.CloneExtension
@@ -4448,10 +4645,7 @@ $root.jspb = (function() {
             CloneExtension.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.CloneExtension)
                     return object;
-                var message = new $root.jspb.test.CloneExtension();
-                if (object.ext != null)
-                    message.ext = String(object.ext);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.CloneExtension(), $root.jspb.test.CloneExtension._getObjectMap());
             };
 
             /**
@@ -4466,12 +4660,7 @@ $root.jspb = (function() {
             CloneExtension.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults)
-                    object.ext = "";
-                if (message.ext != null && message.hasOwnProperty("ext"))
-                    object.ext = message.ext;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.CloneExtension._getObjectMap());
             };
 
             /**
@@ -4702,26 +4891,89 @@ $root.jspb = (function() {
                             return "repeatedGroup." + error;
                     }
                 }
-                error = $root.jspb.test.TestGroup.RequiredGroup.verify(message.requiredGroup);
-                if (error)
-                    return "requiredGroup." + error;
+                {
+                    var error = $root.jspb.test.TestGroup.RequiredGroup.verify(message.requiredGroup);
+                    if (error)
+                        return "requiredGroup." + error;
+                }
                 if (message.optionalGroup != null && message.hasOwnProperty("optionalGroup")) {
-                    error = $root.jspb.test.TestGroup.OptionalGroup.verify(message.optionalGroup);
+                    var error = $root.jspb.test.TestGroup.OptionalGroup.verify(message.optionalGroup);
                     if (error)
                         return "optionalGroup." + error;
                 }
                 if (message.id != null && message.hasOwnProperty("id"))
                     if (!$util.isString(message.id))
                         return "id: string expected";
-                error = $root.jspb.test.Simple2.verify(message.requiredSimple);
-                if (error)
-                    return "requiredSimple." + error;
+                {
+                    var error = $root.jspb.test.Simple2.verify(message.requiredSimple);
+                    if (error)
+                        return "requiredSimple." + error;
+                }
                 if (message.optionalSimple != null && message.hasOwnProperty("optionalSimple")) {
-                    error = $root.jspb.test.Simple2.verify(message.optionalSimple);
+                    var error = $root.jspb.test.Simple2.verify(message.optionalSimple);
                     if (error)
                         return "optionalSimple." + error;
                 }
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            TestGroup._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        1,
+                        "RepeatedGroup",
+                        "repeatedGroup",
+                        "jspb.test.TestGroup.IRepeatedGroup"
+                    ],
+                    [
+                        1,
+                        0,
+                        "RequiredGroup",
+                        "requiredGroup",
+                        "jspb.test.TestGroup.IRequiredGroup"
+                    ],
+                    [
+                        0,
+                        0,
+                        "OptionalGroup",
+                        "optionalGroup",
+                        "jspb.test.TestGroup.IOptionalGroup"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "id",
+                        "string"
+                    ],
+                    [
+                        1,
+                        0,
+                        "Simple2",
+                        "requiredSimple",
+                        "jspb.test.ISimple2"
+                    ],
+                    [
+                        0,
+                        0,
+                        "Simple2",
+                        "optionalSimple",
+                        "jspb.test.ISimple2"
+                    ]
+                ];
             };
 
             /**
@@ -4735,40 +4987,7 @@ $root.jspb = (function() {
             TestGroup.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.TestGroup)
                     return object;
-                var message = new $root.jspb.test.TestGroup();
-                if (object.repeatedGroup) {
-                    if (!Array.isArray(object.repeatedGroup))
-                        throw TypeError(".jspb.test.TestGroup.repeatedGroup: array expected");
-                    message.repeatedGroup = [];
-                    for (var i = 0; i < object.repeatedGroup.length; ++i) {
-                        if (typeof object.repeatedGroup[i] !== "object")
-                            throw TypeError(".jspb.test.TestGroup.repeatedGroup: object expected");
-                        message.repeatedGroup[i] = $root.jspb.test.TestGroup.RepeatedGroup.fromObject(object.repeatedGroup[i]);
-                    }
-                }
-                if (object.requiredGroup != null) {
-                    if (typeof object.requiredGroup !== "object")
-                        throw TypeError(".jspb.test.TestGroup.requiredGroup: object expected");
-                    message.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.fromObject(object.requiredGroup);
-                }
-                if (object.optionalGroup != null) {
-                    if (typeof object.optionalGroup !== "object")
-                        throw TypeError(".jspb.test.TestGroup.optionalGroup: object expected");
-                    message.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.fromObject(object.optionalGroup);
-                }
-                if (object.id != null)
-                    message.id = String(object.id);
-                if (object.requiredSimple != null) {
-                    if (typeof object.requiredSimple !== "object")
-                        throw TypeError(".jspb.test.TestGroup.requiredSimple: object expected");
-                    message.requiredSimple = $root.jspb.test.Simple2.fromObject(object.requiredSimple);
-                }
-                if (object.optionalSimple != null) {
-                    if (typeof object.optionalSimple !== "object")
-                        throw TypeError(".jspb.test.TestGroup.optionalSimple: object expected");
-                    message.optionalSimple = $root.jspb.test.Simple2.fromObject(object.optionalSimple);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.TestGroup(), $root.jspb.test.TestGroup._getObjectMap());
             };
 
             /**
@@ -4783,32 +5002,7 @@ $root.jspb = (function() {
             TestGroup.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.repeatedGroup = [];
-                if (options.defaults) {
-                    object.requiredGroup = null;
-                    object.optionalGroup = null;
-                    object.id = "";
-                    object.requiredSimple = null;
-                    object.optionalSimple = null;
-                }
-                if (message.repeatedGroup && message.repeatedGroup.length) {
-                    object.repeatedGroup = [];
-                    for (var j = 0; j < message.repeatedGroup.length; ++j)
-                        object.repeatedGroup[j] = $root.jspb.test.TestGroup.RepeatedGroup.toObject(message.repeatedGroup[j], options);
-                }
-                if (message.requiredGroup != null && message.hasOwnProperty("requiredGroup"))
-                    object.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.toObject(message.requiredGroup, options);
-                if (message.optionalGroup != null && message.hasOwnProperty("optionalGroup"))
-                    object.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.toObject(message.optionalGroup, options);
-                if (message.id != null && message.hasOwnProperty("id"))
-                    object.id = message.id;
-                if (message.requiredSimple != null && message.hasOwnProperty("requiredSimple"))
-                    object.requiredSimple = $root.jspb.test.Simple2.toObject(message.requiredSimple, options);
-                if (message.optionalSimple != null && message.hasOwnProperty("optionalSimple"))
-                    object.optionalSimple = $root.jspb.test.Simple2.toObject(message.optionalSimple, options);
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.TestGroup._getObjectMap());
             };
 
             /**
@@ -4990,6 +5184,37 @@ $root.jspb = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                RepeatedGroup._getObjectMap = function _getObjectMap() {
+                    return [
+                        [
+                            1,
+                            0,
+                            "s",
+                            "id",
+                            "string"
+                        ],
+                        [
+                            0,
+                            1,
+                            "s",
+                            "someBool",
+                            "boolean"
+                        ]
+                    ];
+                };
+
+                /**
                  * Creates a RepeatedGroup message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof jspb.test.TestGroup.RepeatedGroup
@@ -5000,17 +5225,7 @@ $root.jspb = (function() {
                 RepeatedGroup.fromObject = function fromObject(object) {
                     if (object instanceof $root.jspb.test.TestGroup.RepeatedGroup)
                         return object;
-                    var message = new $root.jspb.test.TestGroup.RepeatedGroup();
-                    if (object.id != null)
-                        message.id = String(object.id);
-                    if (object.someBool) {
-                        if (!Array.isArray(object.someBool))
-                            throw TypeError(".jspb.test.TestGroup.RepeatedGroup.someBool: array expected");
-                        message.someBool = [];
-                        for (var i = 0; i < object.someBool.length; ++i)
-                            message.someBool[i] = Boolean(object.someBool[i]);
-                    }
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.jspb.test.TestGroup.RepeatedGroup(), $root.jspb.test.TestGroup.RepeatedGroup._getObjectMap());
                 };
 
                 /**
@@ -5025,19 +5240,7 @@ $root.jspb = (function() {
                 RepeatedGroup.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.arrays || options.defaults)
-                        object.someBool = [];
-                    if (options.defaults)
-                        object.id = "";
-                    if (message.id != null && message.hasOwnProperty("id"))
-                        object.id = message.id;
-                    if (message.someBool && message.someBool.length) {
-                        object.someBool = [];
-                        for (var j = 0; j < message.someBool.length; ++j)
-                            object.someBool[j] = message.someBool[j];
-                    }
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.jspb.test.TestGroup.RepeatedGroup._getObjectMap());
                 };
 
                 /**
@@ -5192,6 +5395,28 @@ $root.jspb = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                RequiredGroup._getObjectMap = function _getObjectMap() {
+                    return [[
+                            1,
+                            0,
+                            "s",
+                            "id",
+                            "string"
+                        ]];
+                };
+
+                /**
                  * Creates a RequiredGroup message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof jspb.test.TestGroup.RequiredGroup
@@ -5202,10 +5427,7 @@ $root.jspb = (function() {
                 RequiredGroup.fromObject = function fromObject(object) {
                     if (object instanceof $root.jspb.test.TestGroup.RequiredGroup)
                         return object;
-                    var message = new $root.jspb.test.TestGroup.RequiredGroup();
-                    if (object.id != null)
-                        message.id = String(object.id);
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.jspb.test.TestGroup.RequiredGroup(), $root.jspb.test.TestGroup.RequiredGroup._getObjectMap());
                 };
 
                 /**
@@ -5220,12 +5442,7 @@ $root.jspb = (function() {
                 RequiredGroup.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.defaults)
-                        object.id = "";
-                    if (message.id != null && message.hasOwnProperty("id"))
-                        object.id = message.id;
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.jspb.test.TestGroup.RequiredGroup._getObjectMap());
                 };
 
                 /**
@@ -5380,6 +5597,28 @@ $root.jspb = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                OptionalGroup._getObjectMap = function _getObjectMap() {
+                    return [[
+                            1,
+                            0,
+                            "s",
+                            "id",
+                            "string"
+                        ]];
+                };
+
+                /**
                  * Creates an OptionalGroup message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof jspb.test.TestGroup.OptionalGroup
@@ -5390,10 +5629,7 @@ $root.jspb = (function() {
                 OptionalGroup.fromObject = function fromObject(object) {
                     if (object instanceof $root.jspb.test.TestGroup.OptionalGroup)
                         return object;
-                    var message = new $root.jspb.test.TestGroup.OptionalGroup();
-                    if (object.id != null)
-                        message.id = String(object.id);
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.jspb.test.TestGroup.OptionalGroup(), $root.jspb.test.TestGroup.OptionalGroup._getObjectMap());
                 };
 
                 /**
@@ -5408,12 +5644,7 @@ $root.jspb = (function() {
                 OptionalGroup.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.defaults)
-                        object.id = "";
-                    if (message.id != null && message.hasOwnProperty("id"))
-                        object.id = message.id;
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.jspb.test.TestGroup.OptionalGroup._getObjectMap());
                 };
 
                 /**
@@ -5571,6 +5802,28 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            TestGroup1._getObjectMap = function _getObjectMap() {
+                return [[
+                        0,
+                        0,
+                        "RepeatedGroup",
+                        "group",
+                        "jspb.test.TestGroup.IRepeatedGroup"
+                    ]];
+            };
+
+            /**
              * Creates a TestGroup1 message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.TestGroup1
@@ -5581,13 +5834,7 @@ $root.jspb = (function() {
             TestGroup1.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.TestGroup1)
                     return object;
-                var message = new $root.jspb.test.TestGroup1();
-                if (object.group != null) {
-                    if (typeof object.group !== "object")
-                        throw TypeError(".jspb.test.TestGroup1.group: object expected");
-                    message.group = $root.jspb.test.TestGroup.RepeatedGroup.fromObject(object.group);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.TestGroup1(), $root.jspb.test.TestGroup1._getObjectMap());
             };
 
             /**
@@ -5602,12 +5849,7 @@ $root.jspb = (function() {
             TestGroup1.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults)
-                    object.group = null;
-                if (message.group != null && message.hasOwnProperty("group"))
-                    object.group = $root.jspb.test.TestGroup.RepeatedGroup.toObject(message.group, options);
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.TestGroup1._getObjectMap());
             };
 
             /**
@@ -5777,6 +6019,37 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            TestReservedNames._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "extension",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "\".jspb.test.TestReservedNamesExtension.foo\"]",
+                        "number"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a TestReservedNames message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.TestReservedNames
@@ -5787,12 +6060,7 @@ $root.jspb = (function() {
             TestReservedNames.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.TestReservedNames)
                     return object;
-                var message = new $root.jspb.test.TestReservedNames();
-                if (object.extension != null)
-                    message.extension = object.extension | 0;
-                if (object[".jspb.test.TestReservedNamesExtension.foo"] != null)
-                    message[".jspb.test.TestReservedNamesExtension.foo"] = object[".jspb.test.TestReservedNamesExtension.foo"] | 0;
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.TestReservedNames(), $root.jspb.test.TestReservedNames._getObjectMap());
             };
 
             /**
@@ -5807,16 +6075,7 @@ $root.jspb = (function() {
             TestReservedNames.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.extension = 0;
-                    object[".jspb.test.TestReservedNamesExtension.foo"] = 0;
-                }
-                if (message.extension != null && message.hasOwnProperty("extension"))
-                    object.extension = message.extension;
-                if (message[".jspb.test.TestReservedNamesExtension.foo"] != null && message.hasOwnProperty(".jspb.test.TestReservedNamesExtension.foo"))
-                    object[".jspb.test.TestReservedNamesExtension.foo"] = message[".jspb.test.TestReservedNamesExtension.foo"];
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.TestReservedNames._getObjectMap());
             };
 
             /**
@@ -5949,6 +6208,22 @@ $root.jspb = (function() {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            TestReservedNamesExtension._getObjectMap = function _getObjectMap() {
+                return [];
             };
 
             /**
@@ -6313,9 +6588,11 @@ $root.jspb = (function() {
                 }
                 if (message.rone != null && message.hasOwnProperty("rone")) {
                     properties.recursiveOneof = 1;
-                    var error = $root.jspb.test.TestMessageWithOneof.verify(message.rone);
-                    if (error)
-                        return "rone." + error;
+                    {
+                        var error = $root.jspb.test.TestMessageWithOneof.verify(message.rone);
+                        if (error)
+                            return "rone." + error;
+                    }
                 }
                 if (message.rtwo != null && message.hasOwnProperty("rtwo")) {
                     if (properties.recursiveOneof === 1)
@@ -6362,6 +6639,93 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            TestMessageWithOneof._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "pone",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "pthree",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "TestMessageWithOneof",
+                        "rone",
+                        "jspb.test.ITestMessageWithOneof"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "rtwo",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "normalField",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "repeatedField",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "aone",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "atwo",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "bone",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "btwo",
+                        "number"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a TestMessageWithOneof message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.TestMessageWithOneof
@@ -6372,36 +6736,7 @@ $root.jspb = (function() {
             TestMessageWithOneof.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.TestMessageWithOneof)
                     return object;
-                var message = new $root.jspb.test.TestMessageWithOneof();
-                if (object.pone != null)
-                    message.pone = String(object.pone);
-                if (object.pthree != null)
-                    message.pthree = String(object.pthree);
-                if (object.rone != null) {
-                    if (typeof object.rone !== "object")
-                        throw TypeError(".jspb.test.TestMessageWithOneof.rone: object expected");
-                    message.rone = $root.jspb.test.TestMessageWithOneof.fromObject(object.rone);
-                }
-                if (object.rtwo != null)
-                    message.rtwo = String(object.rtwo);
-                if (object.normalField != null)
-                    message.normalField = Boolean(object.normalField);
-                if (object.repeatedField) {
-                    if (!Array.isArray(object.repeatedField))
-                        throw TypeError(".jspb.test.TestMessageWithOneof.repeatedField: array expected");
-                    message.repeatedField = [];
-                    for (var i = 0; i < object.repeatedField.length; ++i)
-                        message.repeatedField[i] = String(object.repeatedField[i]);
-                }
-                if (object.aone != null)
-                    message.aone = object.aone | 0;
-                if (object.atwo != null)
-                    message.atwo = object.atwo | 0;
-                if (object.bone != null)
-                    message.bone = object.bone | 0;
-                if (object.btwo != null)
-                    message.btwo = object.btwo | 0;
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.TestMessageWithOneof(), $root.jspb.test.TestMessageWithOneof._getObjectMap());
             };
 
             /**
@@ -6416,59 +6751,7 @@ $root.jspb = (function() {
             TestMessageWithOneof.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.repeatedField = [];
-                if (options.defaults)
-                    object.normalField = false;
-                if (message.pone != null && message.hasOwnProperty("pone")) {
-                    object.pone = message.pone;
-                    if (options.oneofs)
-                        object.partialOneof = "pone";
-                }
-                if (message.pthree != null && message.hasOwnProperty("pthree")) {
-                    object.pthree = message.pthree;
-                    if (options.oneofs)
-                        object.partialOneof = "pthree";
-                }
-                if (message.rone != null && message.hasOwnProperty("rone")) {
-                    object.rone = $root.jspb.test.TestMessageWithOneof.toObject(message.rone, options);
-                    if (options.oneofs)
-                        object.recursiveOneof = "rone";
-                }
-                if (message.rtwo != null && message.hasOwnProperty("rtwo")) {
-                    object.rtwo = message.rtwo;
-                    if (options.oneofs)
-                        object.recursiveOneof = "rtwo";
-                }
-                if (message.normalField != null && message.hasOwnProperty("normalField"))
-                    object.normalField = message.normalField;
-                if (message.repeatedField && message.repeatedField.length) {
-                    object.repeatedField = [];
-                    for (var j = 0; j < message.repeatedField.length; ++j)
-                        object.repeatedField[j] = message.repeatedField[j];
-                }
-                if (message.aone != null && message.hasOwnProperty("aone")) {
-                    object.aone = message.aone;
-                    if (options.oneofs)
-                        object.defaultOneofA = "aone";
-                }
-                if (message.atwo != null && message.hasOwnProperty("atwo")) {
-                    object.atwo = message.atwo;
-                    if (options.oneofs)
-                        object.defaultOneofA = "atwo";
-                }
-                if (message.bone != null && message.hasOwnProperty("bone")) {
-                    object.bone = message.bone;
-                    if (options.oneofs)
-                        object.defaultOneofB = "bone";
-                }
-                if (message.btwo != null && message.hasOwnProperty("btwo")) {
-                    object.btwo = message.btwo;
-                    if (options.oneofs)
-                        object.defaultOneofB = "btwo";
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.TestMessageWithOneof._getObjectMap());
             };
 
             /**
@@ -6638,6 +6921,37 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            TestEndsWithBytes._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "value",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "a",
+                        "data",
+                        "Uint8Array"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a TestEndsWithBytes message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.TestEndsWithBytes
@@ -6648,15 +6962,7 @@ $root.jspb = (function() {
             TestEndsWithBytes.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.TestEndsWithBytes)
                     return object;
-                var message = new $root.jspb.test.TestEndsWithBytes();
-                if (object.value != null)
-                    message.value = object.value | 0;
-                if (object.data != null)
-                    if (typeof object.data === "string")
-                        $util.base64.decode(object.data, message.data = $util.newBuffer($util.base64.length(object.data)), 0);
-                    else if (object.data.length)
-                        message.data = object.data;
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.TestEndsWithBytes(), $root.jspb.test.TestEndsWithBytes._getObjectMap());
             };
 
             /**
@@ -6671,16 +6977,7 @@ $root.jspb = (function() {
             TestEndsWithBytes.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.value = 0;
-                    object.data = options.bytes === String ? "" : [];
-                }
-                if (message.value != null && message.hasOwnProperty("value"))
-                    object.value = message.value;
-                if (message.data != null && message.hasOwnProperty("data"))
-                    object.data = options.bytes === String ? $util.base64.encode(message.data, 0, message.data.length) : options.bytes === Array ? Array.prototype.slice.call(message.data) : message.data;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.TestEndsWithBytes._getObjectMap());
             };
 
             /**
@@ -7159,7 +7456,7 @@ $root.jspb = (function() {
                     }
                 }
                 if (message.testMapFields != null && message.hasOwnProperty("testMapFields")) {
-                    error = $root.jspb.test.TestMapFieldsNoBinary.verify(message.testMapFields);
+                    var error = $root.jspb.test.TestMapFieldsNoBinary.verify(message.testMapFields);
                     if (error)
                         return "testMapFields." + error;
                 }
@@ -7168,12 +7465,125 @@ $root.jspb = (function() {
                         return "mapStringTestmapfields: object expected";
                     var key = Object.keys(message.mapStringTestmapfields);
                     for (var i = 0; i < key.length; ++i) {
-                        error = $root.jspb.test.TestMapFieldsNoBinary.verify(message.mapStringTestmapfields[key[i]]);
+                        var error = $root.jspb.test.TestMapFieldsNoBinary.verify(message.mapStringTestmapfields[key[i]]);
                         if (error)
                             return "mapStringTestmapfields." + error;
                     }
                 }
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            TestMapFieldsNoBinary._getObjectMap = function _getObjectMap() {
+                var MapValueEnumNoBinaryById = {
+                    0: "MAP_VALUE_FOO_NOBINARY",
+                    1: "MAP_VALUE_BAR_NOBINARY",
+                    2: "MAP_VALUE_BAZ_NOBINARY"
+                };
+                var MapValueEnumNoBinaryByName = {
+                    MAP_VALUE_FOO_NOBINARY: 0,
+                    MAP_VALUE_BAR_NOBINARY: 1,
+                    MAP_VALUE_BAZ_NOBINARY: 2
+                };
+                return [
+                    [
+                        0,
+                        0,
+                        "m",
+                        "mapStringString",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "m",
+                        "mapStringInt32",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "m",
+                        "mapStringInt64",
+                        "number|Long"
+                    ],
+                    [
+                        0,
+                        0,
+                        "m",
+                        "mapStringBool",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "m",
+                        "mapStringDouble",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "e",
+                        "mapStringEnum",
+                        jspb.test.MapValueEnumNoBinary,
+                        MapValueEnumNoBinaryById,
+                        MapValueEnumNoBinaryByName
+                    ],
+                    [
+                        0,
+                        0,
+                        "MapValueMessageNoBinary",
+                        "mapStringMsg",
+                        "jspb.test.IMapValueMessageNoBinary"
+                    ],
+                    [
+                        0,
+                        0,
+                        "m",
+                        "mapInt32String",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "m",
+                        "mapInt64String",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "m",
+                        "mapBoolString",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "TestMapFieldsNoBinary",
+                        "testMapFields",
+                        "jspb.test.ITestMapFieldsNoBinary"
+                    ],
+                    [
+                        0,
+                        0,
+                        "TestMapFieldsNoBinary",
+                        "mapStringTestmapfields",
+                        "jspb.test.ITestMapFieldsNoBinary"
+                    ]
+                ];
             };
 
             /**
@@ -7187,116 +7597,7 @@ $root.jspb = (function() {
             TestMapFieldsNoBinary.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.TestMapFieldsNoBinary)
                     return object;
-                var message = new $root.jspb.test.TestMapFieldsNoBinary();
-                if (object.mapStringString) {
-                    if (typeof object.mapStringString !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringString: object expected");
-                    message.mapStringString = {};
-                    for (var keys = Object.keys(object.mapStringString), i = 0; i < keys.length; ++i)
-                        message.mapStringString[keys[i]] = String(object.mapStringString[keys[i]]);
-                }
-                if (object.mapStringInt32) {
-                    if (typeof object.mapStringInt32 !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringInt32: object expected");
-                    message.mapStringInt32 = {};
-                    for (var keys = Object.keys(object.mapStringInt32), i = 0; i < keys.length; ++i)
-                        message.mapStringInt32[keys[i]] = object.mapStringInt32[keys[i]] | 0;
-                }
-                if (object.mapStringInt64) {
-                    if (typeof object.mapStringInt64 !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringInt64: object expected");
-                    message.mapStringInt64 = {};
-                    for (var keys = Object.keys(object.mapStringInt64), i = 0; i < keys.length; ++i)
-                        if ($util.Long)
-                            (message.mapStringInt64[keys[i]] = $util.Long.fromValue(object.mapStringInt64[keys[i]])).unsigned = false;
-                        else if (typeof object.mapStringInt64[keys[i]] === "string")
-                            message.mapStringInt64[keys[i]] = parseInt(object.mapStringInt64[keys[i]], 10);
-                        else if (typeof object.mapStringInt64[keys[i]] === "number")
-                            message.mapStringInt64[keys[i]] = object.mapStringInt64[keys[i]];
-                        else if (typeof object.mapStringInt64[keys[i]] === "object")
-                            message.mapStringInt64[keys[i]] = new $util.LongBits(object.mapStringInt64[keys[i]].low >>> 0, object.mapStringInt64[keys[i]].high >>> 0).toNumber();
-                }
-                if (object.mapStringBool) {
-                    if (typeof object.mapStringBool !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringBool: object expected");
-                    message.mapStringBool = {};
-                    for (var keys = Object.keys(object.mapStringBool), i = 0; i < keys.length; ++i)
-                        message.mapStringBool[keys[i]] = Boolean(object.mapStringBool[keys[i]]);
-                }
-                if (object.mapStringDouble) {
-                    if (typeof object.mapStringDouble !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringDouble: object expected");
-                    message.mapStringDouble = {};
-                    for (var keys = Object.keys(object.mapStringDouble), i = 0; i < keys.length; ++i)
-                        message.mapStringDouble[keys[i]] = Number(object.mapStringDouble[keys[i]]);
-                }
-                if (object.mapStringEnum) {
-                    if (typeof object.mapStringEnum !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringEnum: object expected");
-                    message.mapStringEnum = {};
-                    for (var keys = Object.keys(object.mapStringEnum), i = 0; i < keys.length; ++i)
-                        switch (object.mapStringEnum[keys[i]]) {
-                        case "MAP_VALUE_FOO_NOBINARY":
-                        case 0:
-                            message.mapStringEnum[keys[i]] = 0;
-                            break;
-                        case "MAP_VALUE_BAR_NOBINARY":
-                        case 1:
-                            message.mapStringEnum[keys[i]] = 1;
-                            break;
-                        case "MAP_VALUE_BAZ_NOBINARY":
-                        case 2:
-                            message.mapStringEnum[keys[i]] = 2;
-                            break;
-                        }
-                }
-                if (object.mapStringMsg) {
-                    if (typeof object.mapStringMsg !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringMsg: object expected");
-                    message.mapStringMsg = {};
-                    for (var keys = Object.keys(object.mapStringMsg), i = 0; i < keys.length; ++i) {
-                        if (typeof object.mapStringMsg[keys[i]] !== "object")
-                            throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringMsg: object expected");
-                        message.mapStringMsg[keys[i]] = $root.jspb.test.MapValueMessageNoBinary.fromObject(object.mapStringMsg[keys[i]]);
-                    }
-                }
-                if (object.mapInt32String) {
-                    if (typeof object.mapInt32String !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapInt32String: object expected");
-                    message.mapInt32String = {};
-                    for (var keys = Object.keys(object.mapInt32String), i = 0; i < keys.length; ++i)
-                        message.mapInt32String[keys[i]] = String(object.mapInt32String[keys[i]]);
-                }
-                if (object.mapInt64String) {
-                    if (typeof object.mapInt64String !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapInt64String: object expected");
-                    message.mapInt64String = {};
-                    for (var keys = Object.keys(object.mapInt64String), i = 0; i < keys.length; ++i)
-                        message.mapInt64String[keys[i]] = String(object.mapInt64String[keys[i]]);
-                }
-                if (object.mapBoolString) {
-                    if (typeof object.mapBoolString !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapBoolString: object expected");
-                    message.mapBoolString = {};
-                    for (var keys = Object.keys(object.mapBoolString), i = 0; i < keys.length; ++i)
-                        message.mapBoolString[keys[i]] = String(object.mapBoolString[keys[i]]);
-                }
-                if (object.testMapFields != null) {
-                    if (typeof object.testMapFields !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.testMapFields: object expected");
-                    message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.fromObject(object.testMapFields);
-                }
-                if (object.mapStringTestmapfields) {
-                    if (typeof object.mapStringTestmapfields !== "object")
-                        throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields: object expected");
-                    message.mapStringTestmapfields = {};
-                    for (var keys = Object.keys(object.mapStringTestmapfields), i = 0; i < keys.length; ++i) {
-                        if (typeof object.mapStringTestmapfields[keys[i]] !== "object")
-                            throw TypeError(".jspb.test.TestMapFieldsNoBinary.mapStringTestmapfields: object expected");
-                        message.mapStringTestmapfields[keys[i]] = $root.jspb.test.TestMapFieldsNoBinary.fromObject(object.mapStringTestmapfields[keys[i]]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.TestMapFieldsNoBinary(), $root.jspb.test.TestMapFieldsNoBinary._getObjectMap());
             };
 
             /**
@@ -7311,84 +7612,7 @@ $root.jspb = (function() {
             TestMapFieldsNoBinary.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.objects || options.defaults) {
-                    object.mapStringString = {};
-                    object.mapStringInt32 = {};
-                    object.mapStringInt64 = {};
-                    object.mapStringBool = {};
-                    object.mapStringDouble = {};
-                    object.mapStringEnum = {};
-                    object.mapStringMsg = {};
-                    object.mapInt32String = {};
-                    object.mapInt64String = {};
-                    object.mapBoolString = {};
-                    object.mapStringTestmapfields = {};
-                }
-                if (options.defaults)
-                    object.testMapFields = null;
-                var keys2;
-                if (message.mapStringString && (keys2 = Object.keys(message.mapStringString)).length) {
-                    object.mapStringString = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapStringString[keys2[j]] = message.mapStringString[keys2[j]];
-                }
-                if (message.mapStringInt32 && (keys2 = Object.keys(message.mapStringInt32)).length) {
-                    object.mapStringInt32 = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapStringInt32[keys2[j]] = message.mapStringInt32[keys2[j]];
-                }
-                if (message.mapStringInt64 && (keys2 = Object.keys(message.mapStringInt64)).length) {
-                    object.mapStringInt64 = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        if (typeof message.mapStringInt64[keys2[j]] === "number")
-                            object.mapStringInt64[keys2[j]] = options.longs === String ? String(message.mapStringInt64[keys2[j]]) : message.mapStringInt64[keys2[j]];
-                        else
-                            object.mapStringInt64[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.mapStringInt64[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.mapStringInt64[keys2[j]].low >>> 0, message.mapStringInt64[keys2[j]].high >>> 0).toNumber() : message.mapStringInt64[keys2[j]];
-                }
-                if (message.mapStringBool && (keys2 = Object.keys(message.mapStringBool)).length) {
-                    object.mapStringBool = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapStringBool[keys2[j]] = message.mapStringBool[keys2[j]];
-                }
-                if (message.mapStringDouble && (keys2 = Object.keys(message.mapStringDouble)).length) {
-                    object.mapStringDouble = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapStringDouble[keys2[j]] = options.json && !isFinite(message.mapStringDouble[keys2[j]]) ? String(message.mapStringDouble[keys2[j]]) : message.mapStringDouble[keys2[j]];
-                }
-                if (message.mapStringEnum && (keys2 = Object.keys(message.mapStringEnum)).length) {
-                    object.mapStringEnum = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapStringEnum[keys2[j]] = options.enums === String ? $root.jspb.test.MapValueEnumNoBinary[message.mapStringEnum[keys2[j]]] : message.mapStringEnum[keys2[j]];
-                }
-                if (message.mapStringMsg && (keys2 = Object.keys(message.mapStringMsg)).length) {
-                    object.mapStringMsg = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapStringMsg[keys2[j]] = $root.jspb.test.MapValueMessageNoBinary.toObject(message.mapStringMsg[keys2[j]], options);
-                }
-                if (message.mapInt32String && (keys2 = Object.keys(message.mapInt32String)).length) {
-                    object.mapInt32String = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapInt32String[keys2[j]] = message.mapInt32String[keys2[j]];
-                }
-                if (message.mapInt64String && (keys2 = Object.keys(message.mapInt64String)).length) {
-                    object.mapInt64String = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapInt64String[keys2[j]] = message.mapInt64String[keys2[j]];
-                }
-                if (message.mapBoolString && (keys2 = Object.keys(message.mapBoolString)).length) {
-                    object.mapBoolString = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapBoolString[keys2[j]] = message.mapBoolString[keys2[j]];
-                }
-                if (message.testMapFields != null && message.hasOwnProperty("testMapFields"))
-                    object.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.toObject(message.testMapFields, options);
-                if (message.mapStringTestmapfields && (keys2 = Object.keys(message.mapStringTestmapfields)).length) {
-                    object.mapStringTestmapfields = {};
-                    for (var j = 0; j < keys2.length; ++j)
-                        object.mapStringTestmapfields[keys2[j]] = $root.jspb.test.TestMapFieldsNoBinary.toObject(message.mapStringTestmapfields[keys2[j]], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.TestMapFieldsNoBinary._getObjectMap());
             };
 
             /**
@@ -7556,6 +7780,28 @@ $root.jspb = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            MapValueMessageNoBinary._getObjectMap = function _getObjectMap() {
+                return [[
+                        0,
+                        0,
+                        "s",
+                        "foo",
+                        "number"
+                    ]];
+            };
+
+            /**
              * Creates a MapValueMessageNoBinary message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof jspb.test.MapValueMessageNoBinary
@@ -7566,10 +7812,7 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.fromObject = function fromObject(object) {
                 if (object instanceof $root.jspb.test.MapValueMessageNoBinary)
                     return object;
-                var message = new $root.jspb.test.MapValueMessageNoBinary();
-                if (object.foo != null)
-                    message.foo = object.foo | 0;
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.jspb.test.MapValueMessageNoBinary(), $root.jspb.test.MapValueMessageNoBinary._getObjectMap());
             };
 
             /**
@@ -7584,12 +7827,7 @@ $root.jspb = (function() {
             MapValueMessageNoBinary.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults)
-                    object.foo = 0;
-                if (message.foo != null && message.hasOwnProperty("foo"))
-                    object.foo = message.foo;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.jspb.test.MapValueMessageNoBinary._getObjectMap());
             };
 
             /**
@@ -7722,6 +7960,22 @@ $root.jspb = (function() {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            Deeply._getObjectMap = function _getObjectMap() {
+                return [];
             };
 
             /**
@@ -7878,6 +8132,22 @@ $root.jspb = (function() {
                     if (typeof message !== "object" || message === null)
                         return "object expected";
                     return null;
+                };
+
+                /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                Nested._getObjectMap = function _getObjectMap() {
+                    return [];
                 };
 
                 /**
@@ -8054,6 +8324,28 @@ $root.jspb = (function() {
                     };
 
                     /**
+                     * Object mapper - array values are:
+                     *   [
+                     *     required field
+                     *     repeated field
+                     *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                     *     field name
+                     *     JavaScript scalar type
+                     *     enumById variable
+                     *     enumByName variable
+                     *   ]
+                     */
+                    Message._getObjectMap = function _getObjectMap() {
+                        return [[
+                                0,
+                                0,
+                                "s",
+                                "count",
+                                "number"
+                            ]];
+                    };
+
+                    /**
                      * Creates a Message message from a plain object. Also converts values to their respective internal types.
                      * @function fromObject
                      * @memberof jspb.test.Deeply.Nested.Message
@@ -8064,10 +8356,7 @@ $root.jspb = (function() {
                     Message.fromObject = function fromObject(object) {
                         if (object instanceof $root.jspb.test.Deeply.Nested.Message)
                             return object;
-                        var message = new $root.jspb.test.Deeply.Nested.Message();
-                        if (object.count != null)
-                            message.count = object.count | 0;
-                        return message;
+                        return $root.objectMapper.toMessage(object, new $root.jspb.test.Deeply.Nested.Message(), $root.jspb.test.Deeply.Nested.Message._getObjectMap());
                     };
 
                     /**
@@ -8082,12 +8371,7 @@ $root.jspb = (function() {
                     Message.toObject = function toObject(message, options) {
                         if (!options)
                             options = {};
-                        var object = {};
-                        if (options.defaults)
-                            object.count = 0;
-                        if (message.count != null && message.hasOwnProperty("count"))
-                            object.count = message.count;
-                        return object;
+                        return $root.objectMapper.toObject(message, options, $root.jspb.test.Deeply.Nested.Message._getObjectMap());
                     };
 
                     /**
@@ -8280,6 +8564,28 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            FileDescriptorSet._getObjectMap = function _getObjectMap() {
+                return [[
+                        0,
+                        1,
+                        "FileDescriptorProto",
+                        "file",
+                        "google.protobuf.IFileDescriptorProto"
+                    ]];
+            };
+
+            /**
              * Creates a FileDescriptorSet message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.FileDescriptorSet
@@ -8290,18 +8596,7 @@ $root.google = (function() {
             FileDescriptorSet.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.FileDescriptorSet)
                     return object;
-                var message = new $root.google.protobuf.FileDescriptorSet();
-                if (object.file) {
-                    if (!Array.isArray(object.file))
-                        throw TypeError(".google.protobuf.FileDescriptorSet.file: array expected");
-                    message.file = [];
-                    for (var i = 0; i < object.file.length; ++i) {
-                        if (typeof object.file[i] !== "object")
-                            throw TypeError(".google.protobuf.FileDescriptorSet.file: object expected");
-                        message.file[i] = $root.google.protobuf.FileDescriptorProto.fromObject(object.file[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.FileDescriptorSet(), $root.google.protobuf.FileDescriptorSet._getObjectMap());
             };
 
             /**
@@ -8316,15 +8611,7 @@ $root.google = (function() {
             FileDescriptorSet.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.file = [];
-                if (message.file && message.file.length) {
-                    object.file = [];
-                    for (var j = 0; j < message.file.length; ++j)
-                        object.file[j] = $root.google.protobuf.FileDescriptorProto.toObject(message.file[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.FileDescriptorSet._getObjectMap());
             };
 
             /**
@@ -8702,7 +8989,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.enumType))
                         return "enumType: array expected";
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        error = $root.google.protobuf.EnumDescriptorProto.verify(message.enumType[i]);
+                        var error = $root.google.protobuf.EnumDescriptorProto.verify(message.enumType[i]);
                         if (error)
                             return "enumType." + error;
                     }
@@ -8711,7 +8998,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.service))
                         return "service: array expected";
                     for (var i = 0; i < message.service.length; ++i) {
-                        error = $root.google.protobuf.ServiceDescriptorProto.verify(message.service[i]);
+                        var error = $root.google.protobuf.ServiceDescriptorProto.verify(message.service[i]);
                         if (error)
                             return "service." + error;
                     }
@@ -8720,18 +9007,18 @@ $root.google = (function() {
                     if (!Array.isArray(message.extension))
                         return "extension: array expected";
                     for (var i = 0; i < message.extension.length; ++i) {
-                        error = $root.google.protobuf.FieldDescriptorProto.verify(message.extension[i]);
+                        var error = $root.google.protobuf.FieldDescriptorProto.verify(message.extension[i]);
                         if (error)
                             return "extension." + error;
                     }
                 }
                 if (message.options != null && message.hasOwnProperty("options")) {
-                    error = $root.google.protobuf.FileOptions.verify(message.options);
+                    var error = $root.google.protobuf.FileOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
                 if (message.sourceCodeInfo != null && message.hasOwnProperty("sourceCodeInfo")) {
-                    error = $root.google.protobuf.SourceCodeInfo.verify(message.sourceCodeInfo);
+                    var error = $root.google.protobuf.SourceCodeInfo.verify(message.sourceCodeInfo);
                     if (error)
                         return "sourceCodeInfo." + error;
                 }
@@ -8739,6 +9026,107 @@ $root.google = (function() {
                     if (!$util.isString(message.syntax))
                         return "syntax: string expected";
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            FileDescriptorProto._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "name",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "\"package\"]",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "dependency",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "publicDependency",
+                        "number"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "weakDependency",
+                        "number"
+                    ],
+                    [
+                        0,
+                        1,
+                        "DescriptorProto",
+                        "messageType",
+                        "google.protobuf.IDescriptorProto"
+                    ],
+                    [
+                        0,
+                        1,
+                        "EnumDescriptorProto",
+                        "enumType",
+                        "google.protobuf.IEnumDescriptorProto"
+                    ],
+                    [
+                        0,
+                        1,
+                        "ServiceDescriptorProto",
+                        "service",
+                        "google.protobuf.IServiceDescriptorProto"
+                    ],
+                    [
+                        0,
+                        1,
+                        "FieldDescriptorProto",
+                        "extension",
+                        "google.protobuf.IFieldDescriptorProto"
+                    ],
+                    [
+                        0,
+                        0,
+                        "FileOptions",
+                        "options",
+                        "google.protobuf.IFileOptions"
+                    ],
+                    [
+                        0,
+                        0,
+                        "SourceCodeInfo",
+                        "sourceCodeInfo",
+                        "google.protobuf.ISourceCodeInfo"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "syntax",
+                        "string"
+                    ]
+                ];
             };
 
             /**
@@ -8752,85 +9140,7 @@ $root.google = (function() {
             FileDescriptorProto.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.FileDescriptorProto)
                     return object;
-                var message = new $root.google.protobuf.FileDescriptorProto();
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object["package"] != null)
-                    message["package"] = String(object["package"]);
-                if (object.dependency) {
-                    if (!Array.isArray(object.dependency))
-                        throw TypeError(".google.protobuf.FileDescriptorProto.dependency: array expected");
-                    message.dependency = [];
-                    for (var i = 0; i < object.dependency.length; ++i)
-                        message.dependency[i] = String(object.dependency[i]);
-                }
-                if (object.publicDependency) {
-                    if (!Array.isArray(object.publicDependency))
-                        throw TypeError(".google.protobuf.FileDescriptorProto.publicDependency: array expected");
-                    message.publicDependency = [];
-                    for (var i = 0; i < object.publicDependency.length; ++i)
-                        message.publicDependency[i] = object.publicDependency[i] | 0;
-                }
-                if (object.weakDependency) {
-                    if (!Array.isArray(object.weakDependency))
-                        throw TypeError(".google.protobuf.FileDescriptorProto.weakDependency: array expected");
-                    message.weakDependency = [];
-                    for (var i = 0; i < object.weakDependency.length; ++i)
-                        message.weakDependency[i] = object.weakDependency[i] | 0;
-                }
-                if (object.messageType) {
-                    if (!Array.isArray(object.messageType))
-                        throw TypeError(".google.protobuf.FileDescriptorProto.messageType: array expected");
-                    message.messageType = [];
-                    for (var i = 0; i < object.messageType.length; ++i) {
-                        if (typeof object.messageType[i] !== "object")
-                            throw TypeError(".google.protobuf.FileDescriptorProto.messageType: object expected");
-                        message.messageType[i] = $root.google.protobuf.DescriptorProto.fromObject(object.messageType[i]);
-                    }
-                }
-                if (object.enumType) {
-                    if (!Array.isArray(object.enumType))
-                        throw TypeError(".google.protobuf.FileDescriptorProto.enumType: array expected");
-                    message.enumType = [];
-                    for (var i = 0; i < object.enumType.length; ++i) {
-                        if (typeof object.enumType[i] !== "object")
-                            throw TypeError(".google.protobuf.FileDescriptorProto.enumType: object expected");
-                        message.enumType[i] = $root.google.protobuf.EnumDescriptorProto.fromObject(object.enumType[i]);
-                    }
-                }
-                if (object.service) {
-                    if (!Array.isArray(object.service))
-                        throw TypeError(".google.protobuf.FileDescriptorProto.service: array expected");
-                    message.service = [];
-                    for (var i = 0; i < object.service.length; ++i) {
-                        if (typeof object.service[i] !== "object")
-                            throw TypeError(".google.protobuf.FileDescriptorProto.service: object expected");
-                        message.service[i] = $root.google.protobuf.ServiceDescriptorProto.fromObject(object.service[i]);
-                    }
-                }
-                if (object.extension) {
-                    if (!Array.isArray(object.extension))
-                        throw TypeError(".google.protobuf.FileDescriptorProto.extension: array expected");
-                    message.extension = [];
-                    for (var i = 0; i < object.extension.length; ++i) {
-                        if (typeof object.extension[i] !== "object")
-                            throw TypeError(".google.protobuf.FileDescriptorProto.extension: object expected");
-                        message.extension[i] = $root.google.protobuf.FieldDescriptorProto.fromObject(object.extension[i]);
-                    }
-                }
-                if (object.options != null) {
-                    if (typeof object.options !== "object")
-                        throw TypeError(".google.protobuf.FileDescriptorProto.options: object expected");
-                    message.options = $root.google.protobuf.FileOptions.fromObject(object.options);
-                }
-                if (object.sourceCodeInfo != null) {
-                    if (typeof object.sourceCodeInfo !== "object")
-                        throw TypeError(".google.protobuf.FileDescriptorProto.sourceCodeInfo: object expected");
-                    message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.fromObject(object.sourceCodeInfo);
-                }
-                if (object.syntax != null)
-                    message.syntax = String(object.syntax);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.FileDescriptorProto(), $root.google.protobuf.FileDescriptorProto._getObjectMap());
             };
 
             /**
@@ -8845,69 +9155,7 @@ $root.google = (function() {
             FileDescriptorProto.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults) {
-                    object.dependency = [];
-                    object.messageType = [];
-                    object.enumType = [];
-                    object.service = [];
-                    object.extension = [];
-                    object.publicDependency = [];
-                    object.weakDependency = [];
-                }
-                if (options.defaults) {
-                    object.name = "";
-                    object["package"] = "";
-                    object.options = null;
-                    object.sourceCodeInfo = null;
-                    object.syntax = "";
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message["package"] != null && message.hasOwnProperty("package"))
-                    object["package"] = message["package"];
-                if (message.dependency && message.dependency.length) {
-                    object.dependency = [];
-                    for (var j = 0; j < message.dependency.length; ++j)
-                        object.dependency[j] = message.dependency[j];
-                }
-                if (message.messageType && message.messageType.length) {
-                    object.messageType = [];
-                    for (var j = 0; j < message.messageType.length; ++j)
-                        object.messageType[j] = $root.google.protobuf.DescriptorProto.toObject(message.messageType[j], options);
-                }
-                if (message.enumType && message.enumType.length) {
-                    object.enumType = [];
-                    for (var j = 0; j < message.enumType.length; ++j)
-                        object.enumType[j] = $root.google.protobuf.EnumDescriptorProto.toObject(message.enumType[j], options);
-                }
-                if (message.service && message.service.length) {
-                    object.service = [];
-                    for (var j = 0; j < message.service.length; ++j)
-                        object.service[j] = $root.google.protobuf.ServiceDescriptorProto.toObject(message.service[j], options);
-                }
-                if (message.extension && message.extension.length) {
-                    object.extension = [];
-                    for (var j = 0; j < message.extension.length; ++j)
-                        object.extension[j] = $root.google.protobuf.FieldDescriptorProto.toObject(message.extension[j], options);
-                }
-                if (message.options != null && message.hasOwnProperty("options"))
-                    object.options = $root.google.protobuf.FileOptions.toObject(message.options, options);
-                if (message.sourceCodeInfo != null && message.hasOwnProperty("sourceCodeInfo"))
-                    object.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.toObject(message.sourceCodeInfo, options);
-                if (message.publicDependency && message.publicDependency.length) {
-                    object.publicDependency = [];
-                    for (var j = 0; j < message.publicDependency.length; ++j)
-                        object.publicDependency[j] = message.publicDependency[j];
-                }
-                if (message.weakDependency && message.weakDependency.length) {
-                    object.weakDependency = [];
-                    for (var j = 0; j < message.weakDependency.length; ++j)
-                        object.weakDependency[j] = message.weakDependency[j];
-                }
-                if (message.syntax != null && message.hasOwnProperty("syntax"))
-                    object.syntax = message.syntax;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.FileDescriptorProto._getObjectMap());
             };
 
             /**
@@ -9227,7 +9475,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.extension))
                         return "extension: array expected";
                     for (var i = 0; i < message.extension.length; ++i) {
-                        error = $root.google.protobuf.FieldDescriptorProto.verify(message.extension[i]);
+                        var error = $root.google.protobuf.FieldDescriptorProto.verify(message.extension[i]);
                         if (error)
                             return "extension." + error;
                     }
@@ -9236,7 +9484,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.nestedType))
                         return "nestedType: array expected";
                     for (var i = 0; i < message.nestedType.length; ++i) {
-                        error = $root.google.protobuf.DescriptorProto.verify(message.nestedType[i]);
+                        var error = $root.google.protobuf.DescriptorProto.verify(message.nestedType[i]);
                         if (error)
                             return "nestedType." + error;
                     }
@@ -9245,7 +9493,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.enumType))
                         return "enumType: array expected";
                     for (var i = 0; i < message.enumType.length; ++i) {
-                        error = $root.google.protobuf.EnumDescriptorProto.verify(message.enumType[i]);
+                        var error = $root.google.protobuf.EnumDescriptorProto.verify(message.enumType[i]);
                         if (error)
                             return "enumType." + error;
                     }
@@ -9254,7 +9502,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.extensionRange))
                         return "extensionRange: array expected";
                     for (var i = 0; i < message.extensionRange.length; ++i) {
-                        error = $root.google.protobuf.DescriptorProto.ExtensionRange.verify(message.extensionRange[i]);
+                        var error = $root.google.protobuf.DescriptorProto.ExtensionRange.verify(message.extensionRange[i]);
                         if (error)
                             return "extensionRange." + error;
                     }
@@ -9263,13 +9511,13 @@ $root.google = (function() {
                     if (!Array.isArray(message.oneofDecl))
                         return "oneofDecl: array expected";
                     for (var i = 0; i < message.oneofDecl.length; ++i) {
-                        error = $root.google.protobuf.OneofDescriptorProto.verify(message.oneofDecl[i]);
+                        var error = $root.google.protobuf.OneofDescriptorProto.verify(message.oneofDecl[i]);
                         if (error)
                             return "oneofDecl." + error;
                     }
                 }
                 if (message.options != null && message.hasOwnProperty("options")) {
-                    error = $root.google.protobuf.MessageOptions.verify(message.options);
+                    var error = $root.google.protobuf.MessageOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
@@ -9277,7 +9525,7 @@ $root.google = (function() {
                     if (!Array.isArray(message.reservedRange))
                         return "reservedRange: array expected";
                     for (var i = 0; i < message.reservedRange.length; ++i) {
-                        error = $root.google.protobuf.DescriptorProto.ReservedRange.verify(message.reservedRange[i]);
+                        var error = $root.google.protobuf.DescriptorProto.ReservedRange.verify(message.reservedRange[i]);
                         if (error)
                             return "reservedRange." + error;
                     }
@@ -9293,6 +9541,93 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            DescriptorProto._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "name",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "FieldDescriptorProto",
+                        "field",
+                        "google.protobuf.IFieldDescriptorProto"
+                    ],
+                    [
+                        0,
+                        1,
+                        "FieldDescriptorProto",
+                        "extension",
+                        "google.protobuf.IFieldDescriptorProto"
+                    ],
+                    [
+                        0,
+                        1,
+                        "DescriptorProto",
+                        "nestedType",
+                        "google.protobuf.IDescriptorProto"
+                    ],
+                    [
+                        0,
+                        1,
+                        "EnumDescriptorProto",
+                        "enumType",
+                        "google.protobuf.IEnumDescriptorProto"
+                    ],
+                    [
+                        0,
+                        1,
+                        "ExtensionRange",
+                        "extensionRange",
+                        "google.protobuf.DescriptorProto.IExtensionRange"
+                    ],
+                    [
+                        0,
+                        1,
+                        "OneofDescriptorProto",
+                        "oneofDecl",
+                        "google.protobuf.IOneofDescriptorProto"
+                    ],
+                    [
+                        0,
+                        0,
+                        "MessageOptions",
+                        "options",
+                        "google.protobuf.IMessageOptions"
+                    ],
+                    [
+                        0,
+                        1,
+                        "ReservedRange",
+                        "reservedRange",
+                        "google.protobuf.DescriptorProto.IReservedRange"
+                    ],
+                    [
+                        0,
+                        1,
+                        "s",
+                        "reservedName",
+                        "string"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a DescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.DescriptorProto
@@ -9303,92 +9638,7 @@ $root.google = (function() {
             DescriptorProto.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.DescriptorProto)
                     return object;
-                var message = new $root.google.protobuf.DescriptorProto();
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object.field) {
-                    if (!Array.isArray(object.field))
-                        throw TypeError(".google.protobuf.DescriptorProto.field: array expected");
-                    message.field = [];
-                    for (var i = 0; i < object.field.length; ++i) {
-                        if (typeof object.field[i] !== "object")
-                            throw TypeError(".google.protobuf.DescriptorProto.field: object expected");
-                        message.field[i] = $root.google.protobuf.FieldDescriptorProto.fromObject(object.field[i]);
-                    }
-                }
-                if (object.extension) {
-                    if (!Array.isArray(object.extension))
-                        throw TypeError(".google.protobuf.DescriptorProto.extension: array expected");
-                    message.extension = [];
-                    for (var i = 0; i < object.extension.length; ++i) {
-                        if (typeof object.extension[i] !== "object")
-                            throw TypeError(".google.protobuf.DescriptorProto.extension: object expected");
-                        message.extension[i] = $root.google.protobuf.FieldDescriptorProto.fromObject(object.extension[i]);
-                    }
-                }
-                if (object.nestedType) {
-                    if (!Array.isArray(object.nestedType))
-                        throw TypeError(".google.protobuf.DescriptorProto.nestedType: array expected");
-                    message.nestedType = [];
-                    for (var i = 0; i < object.nestedType.length; ++i) {
-                        if (typeof object.nestedType[i] !== "object")
-                            throw TypeError(".google.protobuf.DescriptorProto.nestedType: object expected");
-                        message.nestedType[i] = $root.google.protobuf.DescriptorProto.fromObject(object.nestedType[i]);
-                    }
-                }
-                if (object.enumType) {
-                    if (!Array.isArray(object.enumType))
-                        throw TypeError(".google.protobuf.DescriptorProto.enumType: array expected");
-                    message.enumType = [];
-                    for (var i = 0; i < object.enumType.length; ++i) {
-                        if (typeof object.enumType[i] !== "object")
-                            throw TypeError(".google.protobuf.DescriptorProto.enumType: object expected");
-                        message.enumType[i] = $root.google.protobuf.EnumDescriptorProto.fromObject(object.enumType[i]);
-                    }
-                }
-                if (object.extensionRange) {
-                    if (!Array.isArray(object.extensionRange))
-                        throw TypeError(".google.protobuf.DescriptorProto.extensionRange: array expected");
-                    message.extensionRange = [];
-                    for (var i = 0; i < object.extensionRange.length; ++i) {
-                        if (typeof object.extensionRange[i] !== "object")
-                            throw TypeError(".google.protobuf.DescriptorProto.extensionRange: object expected");
-                        message.extensionRange[i] = $root.google.protobuf.DescriptorProto.ExtensionRange.fromObject(object.extensionRange[i]);
-                    }
-                }
-                if (object.oneofDecl) {
-                    if (!Array.isArray(object.oneofDecl))
-                        throw TypeError(".google.protobuf.DescriptorProto.oneofDecl: array expected");
-                    message.oneofDecl = [];
-                    for (var i = 0; i < object.oneofDecl.length; ++i) {
-                        if (typeof object.oneofDecl[i] !== "object")
-                            throw TypeError(".google.protobuf.DescriptorProto.oneofDecl: object expected");
-                        message.oneofDecl[i] = $root.google.protobuf.OneofDescriptorProto.fromObject(object.oneofDecl[i]);
-                    }
-                }
-                if (object.options != null) {
-                    if (typeof object.options !== "object")
-                        throw TypeError(".google.protobuf.DescriptorProto.options: object expected");
-                    message.options = $root.google.protobuf.MessageOptions.fromObject(object.options);
-                }
-                if (object.reservedRange) {
-                    if (!Array.isArray(object.reservedRange))
-                        throw TypeError(".google.protobuf.DescriptorProto.reservedRange: array expected");
-                    message.reservedRange = [];
-                    for (var i = 0; i < object.reservedRange.length; ++i) {
-                        if (typeof object.reservedRange[i] !== "object")
-                            throw TypeError(".google.protobuf.DescriptorProto.reservedRange: object expected");
-                        message.reservedRange[i] = $root.google.protobuf.DescriptorProto.ReservedRange.fromObject(object.reservedRange[i]);
-                    }
-                }
-                if (object.reservedName) {
-                    if (!Array.isArray(object.reservedName))
-                        throw TypeError(".google.protobuf.DescriptorProto.reservedName: array expected");
-                    message.reservedName = [];
-                    for (var i = 0; i < object.reservedName.length; ++i)
-                        message.reservedName[i] = String(object.reservedName[i]);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.DescriptorProto(), $root.google.protobuf.DescriptorProto._getObjectMap());
             };
 
             /**
@@ -9403,66 +9653,7 @@ $root.google = (function() {
             DescriptorProto.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults) {
-                    object.field = [];
-                    object.nestedType = [];
-                    object.enumType = [];
-                    object.extensionRange = [];
-                    object.extension = [];
-                    object.oneofDecl = [];
-                    object.reservedRange = [];
-                    object.reservedName = [];
-                }
-                if (options.defaults) {
-                    object.name = "";
-                    object.options = null;
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message.field && message.field.length) {
-                    object.field = [];
-                    for (var j = 0; j < message.field.length; ++j)
-                        object.field[j] = $root.google.protobuf.FieldDescriptorProto.toObject(message.field[j], options);
-                }
-                if (message.nestedType && message.nestedType.length) {
-                    object.nestedType = [];
-                    for (var j = 0; j < message.nestedType.length; ++j)
-                        object.nestedType[j] = $root.google.protobuf.DescriptorProto.toObject(message.nestedType[j], options);
-                }
-                if (message.enumType && message.enumType.length) {
-                    object.enumType = [];
-                    for (var j = 0; j < message.enumType.length; ++j)
-                        object.enumType[j] = $root.google.protobuf.EnumDescriptorProto.toObject(message.enumType[j], options);
-                }
-                if (message.extensionRange && message.extensionRange.length) {
-                    object.extensionRange = [];
-                    for (var j = 0; j < message.extensionRange.length; ++j)
-                        object.extensionRange[j] = $root.google.protobuf.DescriptorProto.ExtensionRange.toObject(message.extensionRange[j], options);
-                }
-                if (message.extension && message.extension.length) {
-                    object.extension = [];
-                    for (var j = 0; j < message.extension.length; ++j)
-                        object.extension[j] = $root.google.protobuf.FieldDescriptorProto.toObject(message.extension[j], options);
-                }
-                if (message.options != null && message.hasOwnProperty("options"))
-                    object.options = $root.google.protobuf.MessageOptions.toObject(message.options, options);
-                if (message.oneofDecl && message.oneofDecl.length) {
-                    object.oneofDecl = [];
-                    for (var j = 0; j < message.oneofDecl.length; ++j)
-                        object.oneofDecl[j] = $root.google.protobuf.OneofDescriptorProto.toObject(message.oneofDecl[j], options);
-                }
-                if (message.reservedRange && message.reservedRange.length) {
-                    object.reservedRange = [];
-                    for (var j = 0; j < message.reservedRange.length; ++j)
-                        object.reservedRange[j] = $root.google.protobuf.DescriptorProto.ReservedRange.toObject(message.reservedRange[j], options);
-                }
-                if (message.reservedName && message.reservedName.length) {
-                    object.reservedName = [];
-                    for (var j = 0; j < message.reservedName.length; ++j)
-                        object.reservedName[j] = message.reservedName[j];
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.DescriptorProto._getObjectMap());
             };
 
             /**
@@ -9629,6 +9820,37 @@ $root.google = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                ExtensionRange._getObjectMap = function _getObjectMap() {
+                    return [
+                        [
+                            0,
+                            0,
+                            "s",
+                            "start",
+                            "number"
+                        ],
+                        [
+                            0,
+                            0,
+                            "s",
+                            "end",
+                            "number"
+                        ]
+                    ];
+                };
+
+                /**
                  * Creates an ExtensionRange message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof google.protobuf.DescriptorProto.ExtensionRange
@@ -9639,12 +9861,7 @@ $root.google = (function() {
                 ExtensionRange.fromObject = function fromObject(object) {
                     if (object instanceof $root.google.protobuf.DescriptorProto.ExtensionRange)
                         return object;
-                    var message = new $root.google.protobuf.DescriptorProto.ExtensionRange();
-                    if (object.start != null)
-                        message.start = object.start | 0;
-                    if (object.end != null)
-                        message.end = object.end | 0;
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.google.protobuf.DescriptorProto.ExtensionRange(), $root.google.protobuf.DescriptorProto.ExtensionRange._getObjectMap());
                 };
 
                 /**
@@ -9659,16 +9876,7 @@ $root.google = (function() {
                 ExtensionRange.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.defaults) {
-                        object.start = 0;
-                        object.end = 0;
-                    }
-                    if (message.start != null && message.hasOwnProperty("start"))
-                        object.start = message.start;
-                    if (message.end != null && message.hasOwnProperty("end"))
-                        object.end = message.end;
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.google.protobuf.DescriptorProto.ExtensionRange._getObjectMap());
                 };
 
                 /**
@@ -9838,6 +10046,37 @@ $root.google = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                ReservedRange._getObjectMap = function _getObjectMap() {
+                    return [
+                        [
+                            0,
+                            0,
+                            "s",
+                            "start",
+                            "number"
+                        ],
+                        [
+                            0,
+                            0,
+                            "s",
+                            "end",
+                            "number"
+                        ]
+                    ];
+                };
+
+                /**
                  * Creates a ReservedRange message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof google.protobuf.DescriptorProto.ReservedRange
@@ -9848,12 +10087,7 @@ $root.google = (function() {
                 ReservedRange.fromObject = function fromObject(object) {
                     if (object instanceof $root.google.protobuf.DescriptorProto.ReservedRange)
                         return object;
-                    var message = new $root.google.protobuf.DescriptorProto.ReservedRange();
-                    if (object.start != null)
-                        message.start = object.start | 0;
-                    if (object.end != null)
-                        message.end = object.end | 0;
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.google.protobuf.DescriptorProto.ReservedRange(), $root.google.protobuf.DescriptorProto.ReservedRange._getObjectMap());
                 };
 
                 /**
@@ -9868,16 +10102,7 @@ $root.google = (function() {
                 ReservedRange.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.defaults) {
-                        object.start = 0;
-                        object.end = 0;
-                    }
-                    if (message.start != null && message.hasOwnProperty("start"))
-                        object.start = message.start;
-                    if (message.end != null && message.hasOwnProperty("end"))
-                        object.end = message.end;
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.google.protobuf.DescriptorProto.ReservedRange._getObjectMap());
                 };
 
                 /**
@@ -10215,6 +10440,147 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            FieldDescriptorProto._getObjectMap = function _getObjectMap() {
+                var LabelById = {
+                    1: "LABEL_OPTIONAL",
+                    2: "LABEL_REQUIRED",
+                    3: "LABEL_REPEATED"
+                };
+                var LabelByName = {
+                    LABEL_OPTIONAL: 1,
+                    LABEL_REQUIRED: 2,
+                    LABEL_REPEATED: 3
+                };
+                var TypeById = {
+                    1: "TYPE_DOUBLE",
+                    2: "TYPE_FLOAT",
+                    3: "TYPE_INT64",
+                    4: "TYPE_UINT64",
+                    5: "TYPE_INT32",
+                    6: "TYPE_FIXED64",
+                    7: "TYPE_FIXED32",
+                    8: "TYPE_BOOL",
+                    9: "TYPE_STRING",
+                    10: "TYPE_GROUP",
+                    11: "TYPE_MESSAGE",
+                    12: "TYPE_BYTES",
+                    13: "TYPE_UINT32",
+                    14: "TYPE_ENUM",
+                    15: "TYPE_SFIXED32",
+                    16: "TYPE_SFIXED64",
+                    17: "TYPE_SINT32",
+                    18: "TYPE_SINT64"
+                };
+                var TypeByName = {
+                    TYPE_DOUBLE: 1,
+                    TYPE_FLOAT: 2,
+                    TYPE_INT64: 3,
+                    TYPE_UINT64: 4,
+                    TYPE_INT32: 5,
+                    TYPE_FIXED64: 6,
+                    TYPE_FIXED32: 7,
+                    TYPE_BOOL: 8,
+                    TYPE_STRING: 9,
+                    TYPE_GROUP: 10,
+                    TYPE_MESSAGE: 11,
+                    TYPE_BYTES: 12,
+                    TYPE_UINT32: 13,
+                    TYPE_ENUM: 14,
+                    TYPE_SFIXED32: 15,
+                    TYPE_SFIXED64: 16,
+                    TYPE_SINT32: 17,
+                    TYPE_SINT64: 18
+                };
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "name",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "number",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "e",
+                        "label",
+                        google.protobuf.FieldDescriptorProto.Label,
+                        LabelById,
+                        LabelByName
+                    ],
+                    [
+                        0,
+                        0,
+                        "e",
+                        "type",
+                        google.protobuf.FieldDescriptorProto.Type,
+                        TypeById,
+                        TypeByName
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "typeName",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "extendee",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "defaultValue",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "oneofIndex",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "jsonName",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "FieldOptions",
+                        "options",
+                        "google.protobuf.IFieldOptions"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a FieldDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.FieldDescriptorProto
@@ -10225,115 +10591,7 @@ $root.google = (function() {
             FieldDescriptorProto.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.FieldDescriptorProto)
                     return object;
-                var message = new $root.google.protobuf.FieldDescriptorProto();
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object.number != null)
-                    message.number = object.number | 0;
-                switch (object.label) {
-                case "LABEL_OPTIONAL":
-                case 1:
-                    message.label = 1;
-                    break;
-                case "LABEL_REQUIRED":
-                case 2:
-                    message.label = 2;
-                    break;
-                case "LABEL_REPEATED":
-                case 3:
-                    message.label = 3;
-                    break;
-                }
-                switch (object.type) {
-                case "TYPE_DOUBLE":
-                case 1:
-                    message.type = 1;
-                    break;
-                case "TYPE_FLOAT":
-                case 2:
-                    message.type = 2;
-                    break;
-                case "TYPE_INT64":
-                case 3:
-                    message.type = 3;
-                    break;
-                case "TYPE_UINT64":
-                case 4:
-                    message.type = 4;
-                    break;
-                case "TYPE_INT32":
-                case 5:
-                    message.type = 5;
-                    break;
-                case "TYPE_FIXED64":
-                case 6:
-                    message.type = 6;
-                    break;
-                case "TYPE_FIXED32":
-                case 7:
-                    message.type = 7;
-                    break;
-                case "TYPE_BOOL":
-                case 8:
-                    message.type = 8;
-                    break;
-                case "TYPE_STRING":
-                case 9:
-                    message.type = 9;
-                    break;
-                case "TYPE_GROUP":
-                case 10:
-                    message.type = 10;
-                    break;
-                case "TYPE_MESSAGE":
-                case 11:
-                    message.type = 11;
-                    break;
-                case "TYPE_BYTES":
-                case 12:
-                    message.type = 12;
-                    break;
-                case "TYPE_UINT32":
-                case 13:
-                    message.type = 13;
-                    break;
-                case "TYPE_ENUM":
-                case 14:
-                    message.type = 14;
-                    break;
-                case "TYPE_SFIXED32":
-                case 15:
-                    message.type = 15;
-                    break;
-                case "TYPE_SFIXED64":
-                case 16:
-                    message.type = 16;
-                    break;
-                case "TYPE_SINT32":
-                case 17:
-                    message.type = 17;
-                    break;
-                case "TYPE_SINT64":
-                case 18:
-                    message.type = 18;
-                    break;
-                }
-                if (object.typeName != null)
-                    message.typeName = String(object.typeName);
-                if (object.extendee != null)
-                    message.extendee = String(object.extendee);
-                if (object.defaultValue != null)
-                    message.defaultValue = String(object.defaultValue);
-                if (object.oneofIndex != null)
-                    message.oneofIndex = object.oneofIndex | 0;
-                if (object.jsonName != null)
-                    message.jsonName = String(object.jsonName);
-                if (object.options != null) {
-                    if (typeof object.options !== "object")
-                        throw TypeError(".google.protobuf.FieldDescriptorProto.options: object expected");
-                    message.options = $root.google.protobuf.FieldOptions.fromObject(object.options);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.FieldDescriptorProto(), $root.google.protobuf.FieldDescriptorProto._getObjectMap());
             };
 
             /**
@@ -10348,40 +10606,7 @@ $root.google = (function() {
             FieldDescriptorProto.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.name = "";
-                    object.extendee = "";
-                    object.number = 0;
-                    object.label = options.enums === String ? "LABEL_OPTIONAL" : 1;
-                    object.type = options.enums === String ? "TYPE_DOUBLE" : 1;
-                    object.typeName = "";
-                    object.defaultValue = "";
-                    object.options = null;
-                    object.oneofIndex = 0;
-                    object.jsonName = "";
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message.extendee != null && message.hasOwnProperty("extendee"))
-                    object.extendee = message.extendee;
-                if (message.number != null && message.hasOwnProperty("number"))
-                    object.number = message.number;
-                if (message.label != null && message.hasOwnProperty("label"))
-                    object.label = options.enums === String ? $root.google.protobuf.FieldDescriptorProto.Label[message.label] : message.label;
-                if (message.type != null && message.hasOwnProperty("type"))
-                    object.type = options.enums === String ? $root.google.protobuf.FieldDescriptorProto.Type[message.type] : message.type;
-                if (message.typeName != null && message.hasOwnProperty("typeName"))
-                    object.typeName = message.typeName;
-                if (message.defaultValue != null && message.hasOwnProperty("defaultValue"))
-                    object.defaultValue = message.defaultValue;
-                if (message.options != null && message.hasOwnProperty("options"))
-                    object.options = $root.google.protobuf.FieldOptions.toObject(message.options, options);
-                if (message.oneofIndex != null && message.hasOwnProperty("oneofIndex"))
-                    object.oneofIndex = message.oneofIndex;
-                if (message.jsonName != null && message.hasOwnProperty("jsonName"))
-                    object.jsonName = message.jsonName;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.FieldDescriptorProto._getObjectMap());
             };
 
             /**
@@ -10613,6 +10838,37 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            OneofDescriptorProto._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "name",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "OneofOptions",
+                        "options",
+                        "google.protobuf.IOneofOptions"
+                    ]
+                ];
+            };
+
+            /**
              * Creates an OneofDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.OneofDescriptorProto
@@ -10623,15 +10879,7 @@ $root.google = (function() {
             OneofDescriptorProto.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.OneofDescriptorProto)
                     return object;
-                var message = new $root.google.protobuf.OneofDescriptorProto();
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object.options != null) {
-                    if (typeof object.options !== "object")
-                        throw TypeError(".google.protobuf.OneofDescriptorProto.options: object expected");
-                    message.options = $root.google.protobuf.OneofOptions.fromObject(object.options);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.OneofDescriptorProto(), $root.google.protobuf.OneofDescriptorProto._getObjectMap());
             };
 
             /**
@@ -10646,16 +10894,7 @@ $root.google = (function() {
             OneofDescriptorProto.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.name = "";
-                    object.options = null;
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message.options != null && message.hasOwnProperty("options"))
-                    object.options = $root.google.protobuf.OneofOptions.toObject(message.options, options);
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.OneofDescriptorProto._getObjectMap());
             };
 
             /**
@@ -10846,11 +11085,49 @@ $root.google = (function() {
                     }
                 }
                 if (message.options != null && message.hasOwnProperty("options")) {
-                    error = $root.google.protobuf.EnumOptions.verify(message.options);
+                    var error = $root.google.protobuf.EnumOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            EnumDescriptorProto._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "name",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "EnumValueDescriptorProto",
+                        "value",
+                        "google.protobuf.IEnumValueDescriptorProto"
+                    ],
+                    [
+                        0,
+                        0,
+                        "EnumOptions",
+                        "options",
+                        "google.protobuf.IEnumOptions"
+                    ]
+                ];
             };
 
             /**
@@ -10864,25 +11141,7 @@ $root.google = (function() {
             EnumDescriptorProto.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.EnumDescriptorProto)
                     return object;
-                var message = new $root.google.protobuf.EnumDescriptorProto();
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object.value) {
-                    if (!Array.isArray(object.value))
-                        throw TypeError(".google.protobuf.EnumDescriptorProto.value: array expected");
-                    message.value = [];
-                    for (var i = 0; i < object.value.length; ++i) {
-                        if (typeof object.value[i] !== "object")
-                            throw TypeError(".google.protobuf.EnumDescriptorProto.value: object expected");
-                        message.value[i] = $root.google.protobuf.EnumValueDescriptorProto.fromObject(object.value[i]);
-                    }
-                }
-                if (object.options != null) {
-                    if (typeof object.options !== "object")
-                        throw TypeError(".google.protobuf.EnumDescriptorProto.options: object expected");
-                    message.options = $root.google.protobuf.EnumOptions.fromObject(object.options);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.EnumDescriptorProto(), $root.google.protobuf.EnumDescriptorProto._getObjectMap());
             };
 
             /**
@@ -10897,23 +11156,7 @@ $root.google = (function() {
             EnumDescriptorProto.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.value = [];
-                if (options.defaults) {
-                    object.name = "";
-                    object.options = null;
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message.value && message.value.length) {
-                    object.value = [];
-                    for (var j = 0; j < message.value.length; ++j)
-                        object.value[j] = $root.google.protobuf.EnumValueDescriptorProto.toObject(message.value[j], options);
-                }
-                if (message.options != null && message.hasOwnProperty("options"))
-                    object.options = $root.google.protobuf.EnumOptions.toObject(message.options, options);
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.EnumDescriptorProto._getObjectMap());
             };
 
             /**
@@ -11102,6 +11345,44 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            EnumValueDescriptorProto._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "name",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "number",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "EnumValueOptions",
+                        "options",
+                        "google.protobuf.IEnumValueOptions"
+                    ]
+                ];
+            };
+
+            /**
              * Creates an EnumValueDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.EnumValueDescriptorProto
@@ -11112,17 +11393,7 @@ $root.google = (function() {
             EnumValueDescriptorProto.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.EnumValueDescriptorProto)
                     return object;
-                var message = new $root.google.protobuf.EnumValueDescriptorProto();
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object.number != null)
-                    message.number = object.number | 0;
-                if (object.options != null) {
-                    if (typeof object.options !== "object")
-                        throw TypeError(".google.protobuf.EnumValueDescriptorProto.options: object expected");
-                    message.options = $root.google.protobuf.EnumValueOptions.fromObject(object.options);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.EnumValueDescriptorProto(), $root.google.protobuf.EnumValueDescriptorProto._getObjectMap());
             };
 
             /**
@@ -11137,19 +11408,7 @@ $root.google = (function() {
             EnumValueDescriptorProto.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.name = "";
-                    object.number = 0;
-                    object.options = null;
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message.number != null && message.hasOwnProperty("number"))
-                    object.number = message.number;
-                if (message.options != null && message.hasOwnProperty("options"))
-                    object.options = $root.google.protobuf.EnumValueOptions.toObject(message.options, options);
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.EnumValueDescriptorProto._getObjectMap());
             };
 
             /**
@@ -11340,11 +11599,49 @@ $root.google = (function() {
                     }
                 }
                 if (message.options != null && message.hasOwnProperty("options")) {
-                    error = $root.google.protobuf.ServiceOptions.verify(message.options);
+                    var error = $root.google.protobuf.ServiceOptions.verify(message.options);
                     if (error)
                         return "options." + error;
                 }
                 return null;
+            };
+
+            /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            ServiceDescriptorProto._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "name",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "MethodDescriptorProto",
+                        "method",
+                        "google.protobuf.IMethodDescriptorProto"
+                    ],
+                    [
+                        0,
+                        0,
+                        "ServiceOptions",
+                        "options",
+                        "google.protobuf.IServiceOptions"
+                    ]
+                ];
             };
 
             /**
@@ -11358,25 +11655,7 @@ $root.google = (function() {
             ServiceDescriptorProto.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.ServiceDescriptorProto)
                     return object;
-                var message = new $root.google.protobuf.ServiceDescriptorProto();
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object.method) {
-                    if (!Array.isArray(object.method))
-                        throw TypeError(".google.protobuf.ServiceDescriptorProto.method: array expected");
-                    message.method = [];
-                    for (var i = 0; i < object.method.length; ++i) {
-                        if (typeof object.method[i] !== "object")
-                            throw TypeError(".google.protobuf.ServiceDescriptorProto.method: object expected");
-                        message.method[i] = $root.google.protobuf.MethodDescriptorProto.fromObject(object.method[i]);
-                    }
-                }
-                if (object.options != null) {
-                    if (typeof object.options !== "object")
-                        throw TypeError(".google.protobuf.ServiceDescriptorProto.options: object expected");
-                    message.options = $root.google.protobuf.ServiceOptions.fromObject(object.options);
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.ServiceDescriptorProto(), $root.google.protobuf.ServiceDescriptorProto._getObjectMap());
             };
 
             /**
@@ -11391,23 +11670,7 @@ $root.google = (function() {
             ServiceDescriptorProto.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.method = [];
-                if (options.defaults) {
-                    object.name = "";
-                    object.options = null;
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message.method && message.method.length) {
-                    object.method = [];
-                    for (var j = 0; j < message.method.length; ++j)
-                        object.method[j] = $root.google.protobuf.MethodDescriptorProto.toObject(message.method[j], options);
-                }
-                if (message.options != null && message.hasOwnProperty("options"))
-                    object.options = $root.google.protobuf.ServiceOptions.toObject(message.options, options);
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.ServiceDescriptorProto._getObjectMap());
             };
 
             /**
@@ -11647,6 +11910,65 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            MethodDescriptorProto._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "name",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "inputType",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "outputType",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "MethodOptions",
+                        "options",
+                        "google.protobuf.IMethodOptions"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "clientStreaming",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "serverStreaming",
+                        "boolean"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a MethodDescriptorProto message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.MethodDescriptorProto
@@ -11657,23 +11979,7 @@ $root.google = (function() {
             MethodDescriptorProto.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.MethodDescriptorProto)
                     return object;
-                var message = new $root.google.protobuf.MethodDescriptorProto();
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object.inputType != null)
-                    message.inputType = String(object.inputType);
-                if (object.outputType != null)
-                    message.outputType = String(object.outputType);
-                if (object.options != null) {
-                    if (typeof object.options !== "object")
-                        throw TypeError(".google.protobuf.MethodDescriptorProto.options: object expected");
-                    message.options = $root.google.protobuf.MethodOptions.fromObject(object.options);
-                }
-                if (object.clientStreaming != null)
-                    message.clientStreaming = Boolean(object.clientStreaming);
-                if (object.serverStreaming != null)
-                    message.serverStreaming = Boolean(object.serverStreaming);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.MethodDescriptorProto(), $root.google.protobuf.MethodDescriptorProto._getObjectMap());
             };
 
             /**
@@ -11688,28 +11994,7 @@ $root.google = (function() {
             MethodDescriptorProto.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.name = "";
-                    object.inputType = "";
-                    object.outputType = "";
-                    object.options = null;
-                    object.clientStreaming = false;
-                    object.serverStreaming = false;
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message.inputType != null && message.hasOwnProperty("inputType"))
-                    object.inputType = message.inputType;
-                if (message.outputType != null && message.hasOwnProperty("outputType"))
-                    object.outputType = message.outputType;
-                if (message.options != null && message.hasOwnProperty("options"))
-                    object.options = $root.google.protobuf.MethodOptions.toObject(message.options, options);
-                if (message.clientStreaming != null && message.hasOwnProperty("clientStreaming"))
-                    object.clientStreaming = message.clientStreaming;
-                if (message.serverStreaming != null && message.hasOwnProperty("serverStreaming"))
-                    object.serverStreaming = message.serverStreaming;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.MethodDescriptorProto._getObjectMap());
             };
 
             /**
@@ -12116,6 +12401,140 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            FileOptions._getObjectMap = function _getObjectMap() {
+                var OptimizeModeById = {
+                    1: "SPEED",
+                    2: "CODE_SIZE",
+                    3: "LITE_RUNTIME"
+                };
+                var OptimizeModeByName = {
+                    SPEED: 1,
+                    CODE_SIZE: 2,
+                    LITE_RUNTIME: 3
+                };
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "javaPackage",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "javaOuterClassname",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "javaMultipleFiles",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "javaGenerateEqualsAndHash",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "javaStringCheckUtf8",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "e",
+                        "optimizeFor",
+                        google.protobuf.FileOptions.OptimizeMode,
+                        OptimizeModeById,
+                        OptimizeModeByName
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "goPackage",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "ccGenericServices",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "javaGenericServices",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "pyGenericServices",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "deprecated",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "ccEnableArenas",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "objcClassPrefix",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "csharpNamespace",
+                        "string"
+                    ],
+                    [
+                        0,
+                        1,
+                        "UninterpretedOption",
+                        "uninterpretedOption",
+                        "google.protobuf.IUninterpretedOption"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a FileOptions message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.FileOptions
@@ -12126,58 +12545,7 @@ $root.google = (function() {
             FileOptions.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.FileOptions)
                     return object;
-                var message = new $root.google.protobuf.FileOptions();
-                if (object.javaPackage != null)
-                    message.javaPackage = String(object.javaPackage);
-                if (object.javaOuterClassname != null)
-                    message.javaOuterClassname = String(object.javaOuterClassname);
-                if (object.javaMultipleFiles != null)
-                    message.javaMultipleFiles = Boolean(object.javaMultipleFiles);
-                if (object.javaGenerateEqualsAndHash != null)
-                    message.javaGenerateEqualsAndHash = Boolean(object.javaGenerateEqualsAndHash);
-                if (object.javaStringCheckUtf8 != null)
-                    message.javaStringCheckUtf8 = Boolean(object.javaStringCheckUtf8);
-                switch (object.optimizeFor) {
-                case "SPEED":
-                case 1:
-                    message.optimizeFor = 1;
-                    break;
-                case "CODE_SIZE":
-                case 2:
-                    message.optimizeFor = 2;
-                    break;
-                case "LITE_RUNTIME":
-                case 3:
-                    message.optimizeFor = 3;
-                    break;
-                }
-                if (object.goPackage != null)
-                    message.goPackage = String(object.goPackage);
-                if (object.ccGenericServices != null)
-                    message.ccGenericServices = Boolean(object.ccGenericServices);
-                if (object.javaGenericServices != null)
-                    message.javaGenericServices = Boolean(object.javaGenericServices);
-                if (object.pyGenericServices != null)
-                    message.pyGenericServices = Boolean(object.pyGenericServices);
-                if (object.deprecated != null)
-                    message.deprecated = Boolean(object.deprecated);
-                if (object.ccEnableArenas != null)
-                    message.ccEnableArenas = Boolean(object.ccEnableArenas);
-                if (object.objcClassPrefix != null)
-                    message.objcClassPrefix = String(object.objcClassPrefix);
-                if (object.csharpNamespace != null)
-                    message.csharpNamespace = String(object.csharpNamespace);
-                if (object.uninterpretedOption) {
-                    if (!Array.isArray(object.uninterpretedOption))
-                        throw TypeError(".google.protobuf.FileOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
-                            throw TypeError(".google.protobuf.FileOptions.uninterpretedOption: object expected");
-                        message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.FileOptions(), $root.google.protobuf.FileOptions._getObjectMap());
             };
 
             /**
@@ -12192,59 +12560,7 @@ $root.google = (function() {
             FileOptions.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.uninterpretedOption = [];
-                if (options.defaults) {
-                    object.javaPackage = "";
-                    object.javaOuterClassname = "";
-                    object.optimizeFor = options.enums === String ? "SPEED" : 1;
-                    object.javaMultipleFiles = false;
-                    object.goPackage = "";
-                    object.ccGenericServices = false;
-                    object.javaGenericServices = false;
-                    object.pyGenericServices = false;
-                    object.javaGenerateEqualsAndHash = false;
-                    object.deprecated = false;
-                    object.javaStringCheckUtf8 = false;
-                    object.ccEnableArenas = false;
-                    object.objcClassPrefix = "";
-                    object.csharpNamespace = "";
-                }
-                if (message.javaPackage != null && message.hasOwnProperty("javaPackage"))
-                    object.javaPackage = message.javaPackage;
-                if (message.javaOuterClassname != null && message.hasOwnProperty("javaOuterClassname"))
-                    object.javaOuterClassname = message.javaOuterClassname;
-                if (message.optimizeFor != null && message.hasOwnProperty("optimizeFor"))
-                    object.optimizeFor = options.enums === String ? $root.google.protobuf.FileOptions.OptimizeMode[message.optimizeFor] : message.optimizeFor;
-                if (message.javaMultipleFiles != null && message.hasOwnProperty("javaMultipleFiles"))
-                    object.javaMultipleFiles = message.javaMultipleFiles;
-                if (message.goPackage != null && message.hasOwnProperty("goPackage"))
-                    object.goPackage = message.goPackage;
-                if (message.ccGenericServices != null && message.hasOwnProperty("ccGenericServices"))
-                    object.ccGenericServices = message.ccGenericServices;
-                if (message.javaGenericServices != null && message.hasOwnProperty("javaGenericServices"))
-                    object.javaGenericServices = message.javaGenericServices;
-                if (message.pyGenericServices != null && message.hasOwnProperty("pyGenericServices"))
-                    object.pyGenericServices = message.pyGenericServices;
-                if (message.javaGenerateEqualsAndHash != null && message.hasOwnProperty("javaGenerateEqualsAndHash"))
-                    object.javaGenerateEqualsAndHash = message.javaGenerateEqualsAndHash;
-                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
-                    object.deprecated = message.deprecated;
-                if (message.javaStringCheckUtf8 != null && message.hasOwnProperty("javaStringCheckUtf8"))
-                    object.javaStringCheckUtf8 = message.javaStringCheckUtf8;
-                if (message.ccEnableArenas != null && message.hasOwnProperty("ccEnableArenas"))
-                    object.ccEnableArenas = message.ccEnableArenas;
-                if (message.objcClassPrefix != null && message.hasOwnProperty("objcClassPrefix"))
-                    object.objcClassPrefix = message.objcClassPrefix;
-                if (message.csharpNamespace != null && message.hasOwnProperty("csharpNamespace"))
-                    object.csharpNamespace = message.csharpNamespace;
-                if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
-                    for (var j = 0; j < message.uninterpretedOption.length; ++j)
-                        object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.FileOptions._getObjectMap());
             };
 
             /**
@@ -12490,6 +12806,58 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            MessageOptions._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "messageSetWireFormat",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "noStandardDescriptorAccessor",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "deprecated",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "mapEntry",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        1,
+                        "UninterpretedOption",
+                        "uninterpretedOption",
+                        "google.protobuf.IUninterpretedOption"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a MessageOptions message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.MessageOptions
@@ -12500,26 +12868,7 @@ $root.google = (function() {
             MessageOptions.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.MessageOptions)
                     return object;
-                var message = new $root.google.protobuf.MessageOptions();
-                if (object.messageSetWireFormat != null)
-                    message.messageSetWireFormat = Boolean(object.messageSetWireFormat);
-                if (object.noStandardDescriptorAccessor != null)
-                    message.noStandardDescriptorAccessor = Boolean(object.noStandardDescriptorAccessor);
-                if (object.deprecated != null)
-                    message.deprecated = Boolean(object.deprecated);
-                if (object.mapEntry != null)
-                    message.mapEntry = Boolean(object.mapEntry);
-                if (object.uninterpretedOption) {
-                    if (!Array.isArray(object.uninterpretedOption))
-                        throw TypeError(".google.protobuf.MessageOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
-                            throw TypeError(".google.protobuf.MessageOptions.uninterpretedOption: object expected");
-                        message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.MessageOptions(), $root.google.protobuf.MessageOptions._getObjectMap());
             };
 
             /**
@@ -12534,29 +12883,7 @@ $root.google = (function() {
             MessageOptions.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.uninterpretedOption = [];
-                if (options.defaults) {
-                    object.messageSetWireFormat = false;
-                    object.noStandardDescriptorAccessor = false;
-                    object.deprecated = false;
-                    object.mapEntry = false;
-                }
-                if (message.messageSetWireFormat != null && message.hasOwnProperty("messageSetWireFormat"))
-                    object.messageSetWireFormat = message.messageSetWireFormat;
-                if (message.noStandardDescriptorAccessor != null && message.hasOwnProperty("noStandardDescriptorAccessor"))
-                    object.noStandardDescriptorAccessor = message.noStandardDescriptorAccessor;
-                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
-                    object.deprecated = message.deprecated;
-                if (message.mapEntry != null && message.hasOwnProperty("mapEntry"))
-                    object.mapEntry = message.mapEntry;
-                if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
-                    for (var j = 0; j < message.uninterpretedOption.length; ++j)
-                        object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.MessageOptions._getObjectMap());
             };
 
             /**
@@ -12833,6 +13160,96 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            FieldOptions._getObjectMap = function _getObjectMap() {
+                var CTypeById = {
+                    0: "STRING",
+                    1: "CORD",
+                    2: "STRING_PIECE"
+                };
+                var CTypeByName = {
+                    STRING: 0,
+                    CORD: 1,
+                    STRING_PIECE: 2
+                };
+                var JSTypeById = {
+                    0: "JS_NORMAL",
+                    1: "JS_STRING",
+                    2: "JS_NUMBER"
+                };
+                var JSTypeByName = {
+                    JS_NORMAL: 0,
+                    JS_STRING: 1,
+                    JS_NUMBER: 2
+                };
+                return [
+                    [
+                        0,
+                        0,
+                        "e",
+                        "ctype",
+                        google.protobuf.FieldOptions.CType,
+                        CTypeById,
+                        CTypeByName
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "packed",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "e",
+                        "jstype",
+                        google.protobuf.FieldOptions.JSType,
+                        JSTypeById,
+                        JSTypeByName
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "lazy",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "deprecated",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "weak",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        1,
+                        "UninterpretedOption",
+                        "uninterpretedOption",
+                        "google.protobuf.IUninterpretedOption"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a FieldOptions message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.FieldOptions
@@ -12843,54 +13260,7 @@ $root.google = (function() {
             FieldOptions.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.FieldOptions)
                     return object;
-                var message = new $root.google.protobuf.FieldOptions();
-                switch (object.ctype) {
-                case "STRING":
-                case 0:
-                    message.ctype = 0;
-                    break;
-                case "CORD":
-                case 1:
-                    message.ctype = 1;
-                    break;
-                case "STRING_PIECE":
-                case 2:
-                    message.ctype = 2;
-                    break;
-                }
-                if (object.packed != null)
-                    message.packed = Boolean(object.packed);
-                switch (object.jstype) {
-                case "JS_NORMAL":
-                case 0:
-                    message.jstype = 0;
-                    break;
-                case "JS_STRING":
-                case 1:
-                    message.jstype = 1;
-                    break;
-                case "JS_NUMBER":
-                case 2:
-                    message.jstype = 2;
-                    break;
-                }
-                if (object.lazy != null)
-                    message.lazy = Boolean(object.lazy);
-                if (object.deprecated != null)
-                    message.deprecated = Boolean(object.deprecated);
-                if (object.weak != null)
-                    message.weak = Boolean(object.weak);
-                if (object.uninterpretedOption) {
-                    if (!Array.isArray(object.uninterpretedOption))
-                        throw TypeError(".google.protobuf.FieldOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
-                            throw TypeError(".google.protobuf.FieldOptions.uninterpretedOption: object expected");
-                        message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.FieldOptions(), $root.google.protobuf.FieldOptions._getObjectMap());
             };
 
             /**
@@ -12905,35 +13275,7 @@ $root.google = (function() {
             FieldOptions.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.uninterpretedOption = [];
-                if (options.defaults) {
-                    object.ctype = options.enums === String ? "STRING" : 0;
-                    object.packed = false;
-                    object.deprecated = false;
-                    object.lazy = false;
-                    object.jstype = options.enums === String ? "JS_NORMAL" : 0;
-                    object.weak = false;
-                }
-                if (message.ctype != null && message.hasOwnProperty("ctype"))
-                    object.ctype = options.enums === String ? $root.google.protobuf.FieldOptions.CType[message.ctype] : message.ctype;
-                if (message.packed != null && message.hasOwnProperty("packed"))
-                    object.packed = message.packed;
-                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
-                    object.deprecated = message.deprecated;
-                if (message.lazy != null && message.hasOwnProperty("lazy"))
-                    object.lazy = message.lazy;
-                if (message.jstype != null && message.hasOwnProperty("jstype"))
-                    object.jstype = options.enums === String ? $root.google.protobuf.FieldOptions.JSType[message.jstype] : message.jstype;
-                if (message.weak != null && message.hasOwnProperty("weak"))
-                    object.weak = message.weak;
-                if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
-                    for (var j = 0; j < message.uninterpretedOption.length; ++j)
-                        object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.FieldOptions._getObjectMap());
             };
 
             /**
@@ -13126,6 +13468,28 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            OneofOptions._getObjectMap = function _getObjectMap() {
+                return [[
+                        0,
+                        1,
+                        "UninterpretedOption",
+                        "uninterpretedOption",
+                        "google.protobuf.IUninterpretedOption"
+                    ]];
+            };
+
+            /**
              * Creates an OneofOptions message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.OneofOptions
@@ -13136,18 +13500,7 @@ $root.google = (function() {
             OneofOptions.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.OneofOptions)
                     return object;
-                var message = new $root.google.protobuf.OneofOptions();
-                if (object.uninterpretedOption) {
-                    if (!Array.isArray(object.uninterpretedOption))
-                        throw TypeError(".google.protobuf.OneofOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
-                            throw TypeError(".google.protobuf.OneofOptions.uninterpretedOption: object expected");
-                        message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.OneofOptions(), $root.google.protobuf.OneofOptions._getObjectMap());
             };
 
             /**
@@ -13162,15 +13515,7 @@ $root.google = (function() {
             OneofOptions.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.uninterpretedOption = [];
-                if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
-                    for (var j = 0; j < message.uninterpretedOption.length; ++j)
-                        object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.OneofOptions._getObjectMap());
             };
 
             /**
@@ -13384,6 +13729,51 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            EnumOptions._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "allowAlias",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "deprecated",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        1,
+                        "UninterpretedOption",
+                        "uninterpretedOption",
+                        "google.protobuf.IUninterpretedOption"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "\".jspb.test.IsExtension.simpleOption\"]",
+                        "string"
+                    ]
+                ];
+            };
+
+            /**
              * Creates an EnumOptions message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.EnumOptions
@@ -13394,24 +13784,7 @@ $root.google = (function() {
             EnumOptions.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.EnumOptions)
                     return object;
-                var message = new $root.google.protobuf.EnumOptions();
-                if (object.allowAlias != null)
-                    message.allowAlias = Boolean(object.allowAlias);
-                if (object.deprecated != null)
-                    message.deprecated = Boolean(object.deprecated);
-                if (object.uninterpretedOption) {
-                    if (!Array.isArray(object.uninterpretedOption))
-                        throw TypeError(".google.protobuf.EnumOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
-                            throw TypeError(".google.protobuf.EnumOptions.uninterpretedOption: object expected");
-                        message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i]);
-                    }
-                }
-                if (object[".jspb.test.IsExtension.simpleOption"] != null)
-                    message[".jspb.test.IsExtension.simpleOption"] = String(object[".jspb.test.IsExtension.simpleOption"]);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.EnumOptions(), $root.google.protobuf.EnumOptions._getObjectMap());
             };
 
             /**
@@ -13426,26 +13799,7 @@ $root.google = (function() {
             EnumOptions.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.uninterpretedOption = [];
-                if (options.defaults) {
-                    object.allowAlias = false;
-                    object.deprecated = false;
-                    object[".jspb.test.IsExtension.simpleOption"] = "";
-                }
-                if (message.allowAlias != null && message.hasOwnProperty("allowAlias"))
-                    object.allowAlias = message.allowAlias;
-                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
-                    object.deprecated = message.deprecated;
-                if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
-                    for (var j = 0; j < message.uninterpretedOption.length; ++j)
-                        object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
-                }
-                if (message[".jspb.test.IsExtension.simpleOption"] != null && message.hasOwnProperty(".jspb.test.IsExtension.simpleOption"))
-                    object[".jspb.test.IsExtension.simpleOption"] = message[".jspb.test.IsExtension.simpleOption"];
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.EnumOptions._getObjectMap());
             };
 
             /**
@@ -13625,6 +13979,37 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            EnumValueOptions._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "deprecated",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        1,
+                        "UninterpretedOption",
+                        "uninterpretedOption",
+                        "google.protobuf.IUninterpretedOption"
+                    ]
+                ];
+            };
+
+            /**
              * Creates an EnumValueOptions message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.EnumValueOptions
@@ -13635,20 +14020,7 @@ $root.google = (function() {
             EnumValueOptions.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.EnumValueOptions)
                     return object;
-                var message = new $root.google.protobuf.EnumValueOptions();
-                if (object.deprecated != null)
-                    message.deprecated = Boolean(object.deprecated);
-                if (object.uninterpretedOption) {
-                    if (!Array.isArray(object.uninterpretedOption))
-                        throw TypeError(".google.protobuf.EnumValueOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
-                            throw TypeError(".google.protobuf.EnumValueOptions.uninterpretedOption: object expected");
-                        message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.EnumValueOptions(), $root.google.protobuf.EnumValueOptions._getObjectMap());
             };
 
             /**
@@ -13663,19 +14035,7 @@ $root.google = (function() {
             EnumValueOptions.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.uninterpretedOption = [];
-                if (options.defaults)
-                    object.deprecated = false;
-                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
-                    object.deprecated = message.deprecated;
-                if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
-                    for (var j = 0; j < message.uninterpretedOption.length; ++j)
-                        object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.EnumValueOptions._getObjectMap());
             };
 
             /**
@@ -13855,6 +14215,37 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            ServiceOptions._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "deprecated",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        1,
+                        "UninterpretedOption",
+                        "uninterpretedOption",
+                        "google.protobuf.IUninterpretedOption"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a ServiceOptions message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.ServiceOptions
@@ -13865,20 +14256,7 @@ $root.google = (function() {
             ServiceOptions.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.ServiceOptions)
                     return object;
-                var message = new $root.google.protobuf.ServiceOptions();
-                if (object.deprecated != null)
-                    message.deprecated = Boolean(object.deprecated);
-                if (object.uninterpretedOption) {
-                    if (!Array.isArray(object.uninterpretedOption))
-                        throw TypeError(".google.protobuf.ServiceOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
-                            throw TypeError(".google.protobuf.ServiceOptions.uninterpretedOption: object expected");
-                        message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.ServiceOptions(), $root.google.protobuf.ServiceOptions._getObjectMap());
             };
 
             /**
@@ -13893,19 +14271,7 @@ $root.google = (function() {
             ServiceOptions.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.uninterpretedOption = [];
-                if (options.defaults)
-                    object.deprecated = false;
-                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
-                    object.deprecated = message.deprecated;
-                if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
-                    for (var j = 0; j < message.uninterpretedOption.length; ++j)
-                        object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.ServiceOptions._getObjectMap());
             };
 
             /**
@@ -14108,6 +14474,56 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            MethodOptions._getObjectMap = function _getObjectMap() {
+                var IdempotencyLevelById = {
+                    0: "IDEMPOTENCY_UNKNOWN",
+                    1: "NO_SIDE_EFFECTS",
+                    2: "IDEMPOTENT"
+                };
+                var IdempotencyLevelByName = {
+                    IDEMPOTENCY_UNKNOWN: 0,
+                    NO_SIDE_EFFECTS: 1,
+                    IDEMPOTENT: 2
+                };
+                return [
+                    [
+                        0,
+                        0,
+                        "s",
+                        "deprecated",
+                        "boolean"
+                    ],
+                    [
+                        0,
+                        0,
+                        "e",
+                        "idempotencyLevel",
+                        google.protobuf.MethodOptions.IdempotencyLevel,
+                        IdempotencyLevelById,
+                        IdempotencyLevelByName
+                    ],
+                    [
+                        0,
+                        1,
+                        "UninterpretedOption",
+                        "uninterpretedOption",
+                        "google.protobuf.IUninterpretedOption"
+                    ]
+                ];
+            };
+
+            /**
              * Creates a MethodOptions message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.MethodOptions
@@ -14118,34 +14534,7 @@ $root.google = (function() {
             MethodOptions.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.MethodOptions)
                     return object;
-                var message = new $root.google.protobuf.MethodOptions();
-                if (object.deprecated != null)
-                    message.deprecated = Boolean(object.deprecated);
-                switch (object.idempotencyLevel) {
-                case "IDEMPOTENCY_UNKNOWN":
-                case 0:
-                    message.idempotencyLevel = 0;
-                    break;
-                case "NO_SIDE_EFFECTS":
-                case 1:
-                    message.idempotencyLevel = 1;
-                    break;
-                case "IDEMPOTENT":
-                case 2:
-                    message.idempotencyLevel = 2;
-                    break;
-                }
-                if (object.uninterpretedOption) {
-                    if (!Array.isArray(object.uninterpretedOption))
-                        throw TypeError(".google.protobuf.MethodOptions.uninterpretedOption: array expected");
-                    message.uninterpretedOption = [];
-                    for (var i = 0; i < object.uninterpretedOption.length; ++i) {
-                        if (typeof object.uninterpretedOption[i] !== "object")
-                            throw TypeError(".google.protobuf.MethodOptions.uninterpretedOption: object expected");
-                        message.uninterpretedOption[i] = $root.google.protobuf.UninterpretedOption.fromObject(object.uninterpretedOption[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.MethodOptions(), $root.google.protobuf.MethodOptions._getObjectMap());
             };
 
             /**
@@ -14160,23 +14549,7 @@ $root.google = (function() {
             MethodOptions.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.uninterpretedOption = [];
-                if (options.defaults) {
-                    object.deprecated = false;
-                    object.idempotencyLevel = options.enums === String ? "IDEMPOTENCY_UNKNOWN" : 0;
-                }
-                if (message.deprecated != null && message.hasOwnProperty("deprecated"))
-                    object.deprecated = message.deprecated;
-                if (message.idempotencyLevel != null && message.hasOwnProperty("idempotencyLevel"))
-                    object.idempotencyLevel = options.enums === String ? $root.google.protobuf.MethodOptions.IdempotencyLevel[message.idempotencyLevel] : message.idempotencyLevel;
-                if (message.uninterpretedOption && message.uninterpretedOption.length) {
-                    object.uninterpretedOption = [];
-                    for (var j = 0; j < message.uninterpretedOption.length; ++j)
-                        object.uninterpretedOption[j] = $root.google.protobuf.UninterpretedOption.toObject(message.uninterpretedOption[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.MethodOptions._getObjectMap());
             };
 
             /**
@@ -14456,6 +14829,72 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            UninterpretedOption._getObjectMap = function _getObjectMap() {
+                return [
+                    [
+                        0,
+                        1,
+                        "NamePart",
+                        "name",
+                        "google.protobuf.UninterpretedOption.INamePart"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "identifierValue",
+                        "string"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "positiveIntValue",
+                        "number|Long"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "negativeIntValue",
+                        "number|Long"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "doubleValue",
+                        "number"
+                    ],
+                    [
+                        0,
+                        0,
+                        "a",
+                        "stringValue",
+                        "Uint8Array"
+                    ],
+                    [
+                        0,
+                        0,
+                        "s",
+                        "aggregateValue",
+                        "string"
+                    ]
+                ];
+            };
+
+            /**
              * Creates an UninterpretedOption message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.UninterpretedOption
@@ -14466,47 +14905,7 @@ $root.google = (function() {
             UninterpretedOption.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.UninterpretedOption)
                     return object;
-                var message = new $root.google.protobuf.UninterpretedOption();
-                if (object.name) {
-                    if (!Array.isArray(object.name))
-                        throw TypeError(".google.protobuf.UninterpretedOption.name: array expected");
-                    message.name = [];
-                    for (var i = 0; i < object.name.length; ++i) {
-                        if (typeof object.name[i] !== "object")
-                            throw TypeError(".google.protobuf.UninterpretedOption.name: object expected");
-                        message.name[i] = $root.google.protobuf.UninterpretedOption.NamePart.fromObject(object.name[i]);
-                    }
-                }
-                if (object.identifierValue != null)
-                    message.identifierValue = String(object.identifierValue);
-                if (object.positiveIntValue != null)
-                    if ($util.Long)
-                        (message.positiveIntValue = $util.Long.fromValue(object.positiveIntValue)).unsigned = true;
-                    else if (typeof object.positiveIntValue === "string")
-                        message.positiveIntValue = parseInt(object.positiveIntValue, 10);
-                    else if (typeof object.positiveIntValue === "number")
-                        message.positiveIntValue = object.positiveIntValue;
-                    else if (typeof object.positiveIntValue === "object")
-                        message.positiveIntValue = new $util.LongBits(object.positiveIntValue.low >>> 0, object.positiveIntValue.high >>> 0).toNumber(true);
-                if (object.negativeIntValue != null)
-                    if ($util.Long)
-                        (message.negativeIntValue = $util.Long.fromValue(object.negativeIntValue)).unsigned = false;
-                    else if (typeof object.negativeIntValue === "string")
-                        message.negativeIntValue = parseInt(object.negativeIntValue, 10);
-                    else if (typeof object.negativeIntValue === "number")
-                        message.negativeIntValue = object.negativeIntValue;
-                    else if (typeof object.negativeIntValue === "object")
-                        message.negativeIntValue = new $util.LongBits(object.negativeIntValue.low >>> 0, object.negativeIntValue.high >>> 0).toNumber();
-                if (object.doubleValue != null)
-                    message.doubleValue = Number(object.doubleValue);
-                if (object.stringValue != null)
-                    if (typeof object.stringValue === "string")
-                        $util.base64.decode(object.stringValue, message.stringValue = $util.newBuffer($util.base64.length(object.stringValue)), 0);
-                    else if (object.stringValue.length)
-                        message.stringValue = object.stringValue;
-                if (object.aggregateValue != null)
-                    message.aggregateValue = String(object.aggregateValue);
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.UninterpretedOption(), $root.google.protobuf.UninterpretedOption._getObjectMap());
             };
 
             /**
@@ -14521,49 +14920,7 @@ $root.google = (function() {
             UninterpretedOption.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.name = [];
-                if (options.defaults) {
-                    object.identifierValue = "";
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, true);
-                        object.positiveIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.positiveIntValue = options.longs === String ? "0" : 0;
-                    if ($util.Long) {
-                        var long = new $util.Long(0, 0, false);
-                        object.negativeIntValue = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                    } else
-                        object.negativeIntValue = options.longs === String ? "0" : 0;
-                    object.doubleValue = 0;
-                    object.stringValue = options.bytes === String ? "" : [];
-                    object.aggregateValue = "";
-                }
-                if (message.name && message.name.length) {
-                    object.name = [];
-                    for (var j = 0; j < message.name.length; ++j)
-                        object.name[j] = $root.google.protobuf.UninterpretedOption.NamePart.toObject(message.name[j], options);
-                }
-                if (message.identifierValue != null && message.hasOwnProperty("identifierValue"))
-                    object.identifierValue = message.identifierValue;
-                if (message.positiveIntValue != null && message.hasOwnProperty("positiveIntValue"))
-                    if (typeof message.positiveIntValue === "number")
-                        object.positiveIntValue = options.longs === String ? String(message.positiveIntValue) : message.positiveIntValue;
-                    else
-                        object.positiveIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.positiveIntValue) : options.longs === Number ? new $util.LongBits(message.positiveIntValue.low >>> 0, message.positiveIntValue.high >>> 0).toNumber(true) : message.positiveIntValue;
-                if (message.negativeIntValue != null && message.hasOwnProperty("negativeIntValue"))
-                    if (typeof message.negativeIntValue === "number")
-                        object.negativeIntValue = options.longs === String ? String(message.negativeIntValue) : message.negativeIntValue;
-                    else
-                        object.negativeIntValue = options.longs === String ? $util.Long.prototype.toString.call(message.negativeIntValue) : options.longs === Number ? new $util.LongBits(message.negativeIntValue.low >>> 0, message.negativeIntValue.high >>> 0).toNumber() : message.negativeIntValue;
-                if (message.doubleValue != null && message.hasOwnProperty("doubleValue"))
-                    object.doubleValue = options.json && !isFinite(message.doubleValue) ? String(message.doubleValue) : message.doubleValue;
-                if (message.stringValue != null && message.hasOwnProperty("stringValue"))
-                    object.stringValue = options.bytes === String ? $util.base64.encode(message.stringValue, 0, message.stringValue.length) : options.bytes === Array ? Array.prototype.slice.call(message.stringValue) : message.stringValue;
-                if (message.aggregateValue != null && message.hasOwnProperty("aggregateValue"))
-                    object.aggregateValue = message.aggregateValue;
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.UninterpretedOption._getObjectMap());
             };
 
             /**
@@ -14730,6 +15087,37 @@ $root.google = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                NamePart._getObjectMap = function _getObjectMap() {
+                    return [
+                        [
+                            1,
+                            0,
+                            "s",
+                            "namePart",
+                            "string"
+                        ],
+                        [
+                            1,
+                            0,
+                            "s",
+                            "isExtension",
+                            "boolean"
+                        ]
+                    ];
+                };
+
+                /**
                  * Creates a NamePart message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof google.protobuf.UninterpretedOption.NamePart
@@ -14740,12 +15128,7 @@ $root.google = (function() {
                 NamePart.fromObject = function fromObject(object) {
                     if (object instanceof $root.google.protobuf.UninterpretedOption.NamePart)
                         return object;
-                    var message = new $root.google.protobuf.UninterpretedOption.NamePart();
-                    if (object.namePart != null)
-                        message.namePart = String(object.namePart);
-                    if (object.isExtension != null)
-                        message.isExtension = Boolean(object.isExtension);
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.google.protobuf.UninterpretedOption.NamePart(), $root.google.protobuf.UninterpretedOption.NamePart._getObjectMap());
                 };
 
                 /**
@@ -14760,16 +15143,7 @@ $root.google = (function() {
                 NamePart.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.defaults) {
-                        object.namePart = "";
-                        object.isExtension = false;
-                    }
-                    if (message.namePart != null && message.hasOwnProperty("namePart"))
-                        object.namePart = message.namePart;
-                    if (message.isExtension != null && message.hasOwnProperty("isExtension"))
-                        object.isExtension = message.isExtension;
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.google.protobuf.UninterpretedOption.NamePart._getObjectMap());
                 };
 
                 /**
@@ -14935,6 +15309,28 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            SourceCodeInfo._getObjectMap = function _getObjectMap() {
+                return [[
+                        0,
+                        1,
+                        "Location",
+                        "location",
+                        "google.protobuf.SourceCodeInfo.ILocation"
+                    ]];
+            };
+
+            /**
              * Creates a SourceCodeInfo message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.SourceCodeInfo
@@ -14945,18 +15341,7 @@ $root.google = (function() {
             SourceCodeInfo.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.SourceCodeInfo)
                     return object;
-                var message = new $root.google.protobuf.SourceCodeInfo();
-                if (object.location) {
-                    if (!Array.isArray(object.location))
-                        throw TypeError(".google.protobuf.SourceCodeInfo.location: array expected");
-                    message.location = [];
-                    for (var i = 0; i < object.location.length; ++i) {
-                        if (typeof object.location[i] !== "object")
-                            throw TypeError(".google.protobuf.SourceCodeInfo.location: object expected");
-                        message.location[i] = $root.google.protobuf.SourceCodeInfo.Location.fromObject(object.location[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.SourceCodeInfo(), $root.google.protobuf.SourceCodeInfo._getObjectMap());
             };
 
             /**
@@ -14971,15 +15356,7 @@ $root.google = (function() {
             SourceCodeInfo.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.location = [];
-                if (message.location && message.location.length) {
-                    object.location = [];
-                    for (var j = 0; j < message.location.length; ++j)
-                        object.location[j] = $root.google.protobuf.SourceCodeInfo.Location.toObject(message.location[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.SourceCodeInfo._getObjectMap());
             };
 
             /**
@@ -15237,6 +15614,58 @@ $root.google = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                Location._getObjectMap = function _getObjectMap() {
+                    return [
+                        [
+                            0,
+                            1,
+                            "s",
+                            "path",
+                            "number"
+                        ],
+                        [
+                            0,
+                            1,
+                            "s",
+                            "span",
+                            "number"
+                        ],
+                        [
+                            0,
+                            0,
+                            "s",
+                            "leadingComments",
+                            "string"
+                        ],
+                        [
+                            0,
+                            0,
+                            "s",
+                            "trailingComments",
+                            "string"
+                        ],
+                        [
+                            0,
+                            1,
+                            "s",
+                            "leadingDetachedComments",
+                            "string"
+                        ]
+                    ];
+                };
+
+                /**
                  * Creates a Location message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof google.protobuf.SourceCodeInfo.Location
@@ -15247,33 +15676,7 @@ $root.google = (function() {
                 Location.fromObject = function fromObject(object) {
                     if (object instanceof $root.google.protobuf.SourceCodeInfo.Location)
                         return object;
-                    var message = new $root.google.protobuf.SourceCodeInfo.Location();
-                    if (object.path) {
-                        if (!Array.isArray(object.path))
-                            throw TypeError(".google.protobuf.SourceCodeInfo.Location.path: array expected");
-                        message.path = [];
-                        for (var i = 0; i < object.path.length; ++i)
-                            message.path[i] = object.path[i] | 0;
-                    }
-                    if (object.span) {
-                        if (!Array.isArray(object.span))
-                            throw TypeError(".google.protobuf.SourceCodeInfo.Location.span: array expected");
-                        message.span = [];
-                        for (var i = 0; i < object.span.length; ++i)
-                            message.span[i] = object.span[i] | 0;
-                    }
-                    if (object.leadingComments != null)
-                        message.leadingComments = String(object.leadingComments);
-                    if (object.trailingComments != null)
-                        message.trailingComments = String(object.trailingComments);
-                    if (object.leadingDetachedComments) {
-                        if (!Array.isArray(object.leadingDetachedComments))
-                            throw TypeError(".google.protobuf.SourceCodeInfo.Location.leadingDetachedComments: array expected");
-                        message.leadingDetachedComments = [];
-                        for (var i = 0; i < object.leadingDetachedComments.length; ++i)
-                            message.leadingDetachedComments[i] = String(object.leadingDetachedComments[i]);
-                    }
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.google.protobuf.SourceCodeInfo.Location(), $root.google.protobuf.SourceCodeInfo.Location._getObjectMap());
                 };
 
                 /**
@@ -15288,36 +15691,7 @@ $root.google = (function() {
                 Location.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.arrays || options.defaults) {
-                        object.path = [];
-                        object.span = [];
-                        object.leadingDetachedComments = [];
-                    }
-                    if (options.defaults) {
-                        object.leadingComments = "";
-                        object.trailingComments = "";
-                    }
-                    if (message.path && message.path.length) {
-                        object.path = [];
-                        for (var j = 0; j < message.path.length; ++j)
-                            object.path[j] = message.path[j];
-                    }
-                    if (message.span && message.span.length) {
-                        object.span = [];
-                        for (var j = 0; j < message.span.length; ++j)
-                            object.span[j] = message.span[j];
-                    }
-                    if (message.leadingComments != null && message.hasOwnProperty("leadingComments"))
-                        object.leadingComments = message.leadingComments;
-                    if (message.trailingComments != null && message.hasOwnProperty("trailingComments"))
-                        object.trailingComments = message.trailingComments;
-                    if (message.leadingDetachedComments && message.leadingDetachedComments.length) {
-                        object.leadingDetachedComments = [];
-                        for (var j = 0; j < message.leadingDetachedComments.length; ++j)
-                            object.leadingDetachedComments[j] = message.leadingDetachedComments[j];
-                    }
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.google.protobuf.SourceCodeInfo.Location._getObjectMap());
                 };
 
                 /**
@@ -15483,6 +15857,28 @@ $root.google = (function() {
             };
 
             /**
+             * Object mapper - array values are:
+             *   [
+             *     required field
+             *     repeated field
+             *     field type - (a)rray, (m)ap, (e)num, (s)calar
+             *     field name
+             *     JavaScript scalar type
+             *     enumById variable
+             *     enumByName variable
+             *   ]
+             */
+            GeneratedCodeInfo._getObjectMap = function _getObjectMap() {
+                return [[
+                        0,
+                        1,
+                        "Annotation",
+                        "annotation",
+                        "google.protobuf.GeneratedCodeInfo.IAnnotation"
+                    ]];
+            };
+
+            /**
              * Creates a GeneratedCodeInfo message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
              * @memberof google.protobuf.GeneratedCodeInfo
@@ -15493,18 +15889,7 @@ $root.google = (function() {
             GeneratedCodeInfo.fromObject = function fromObject(object) {
                 if (object instanceof $root.google.protobuf.GeneratedCodeInfo)
                     return object;
-                var message = new $root.google.protobuf.GeneratedCodeInfo();
-                if (object.annotation) {
-                    if (!Array.isArray(object.annotation))
-                        throw TypeError(".google.protobuf.GeneratedCodeInfo.annotation: array expected");
-                    message.annotation = [];
-                    for (var i = 0; i < object.annotation.length; ++i) {
-                        if (typeof object.annotation[i] !== "object")
-                            throw TypeError(".google.protobuf.GeneratedCodeInfo.annotation: object expected");
-                        message.annotation[i] = $root.google.protobuf.GeneratedCodeInfo.Annotation.fromObject(object.annotation[i]);
-                    }
-                }
-                return message;
+                return $root.objectMapper.toMessage(object, new $root.google.protobuf.GeneratedCodeInfo(), $root.google.protobuf.GeneratedCodeInfo._getObjectMap());
             };
 
             /**
@@ -15519,15 +15904,7 @@ $root.google = (function() {
             GeneratedCodeInfo.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
-                var object = {};
-                if (options.arrays || options.defaults)
-                    object.annotation = [];
-                if (message.annotation && message.annotation.length) {
-                    object.annotation = [];
-                    for (var j = 0; j < message.annotation.length; ++j)
-                        object.annotation[j] = $root.google.protobuf.GeneratedCodeInfo.Annotation.toObject(message.annotation[j], options);
-                }
-                return object;
+                return $root.objectMapper.toObject(message, options, $root.google.protobuf.GeneratedCodeInfo._getObjectMap());
             };
 
             /**
@@ -15744,6 +16121,51 @@ $root.google = (function() {
                 };
 
                 /**
+                 * Object mapper - array values are:
+                 *   [
+                 *     required field
+                 *     repeated field
+                 *     field type - (a)rray, (m)ap, (e)num, (s)calar
+                 *     field name
+                 *     JavaScript scalar type
+                 *     enumById variable
+                 *     enumByName variable
+                 *   ]
+                 */
+                Annotation._getObjectMap = function _getObjectMap() {
+                    return [
+                        [
+                            0,
+                            1,
+                            "s",
+                            "path",
+                            "number"
+                        ],
+                        [
+                            0,
+                            0,
+                            "s",
+                            "sourceFile",
+                            "string"
+                        ],
+                        [
+                            0,
+                            0,
+                            "s",
+                            "begin",
+                            "number"
+                        ],
+                        [
+                            0,
+                            0,
+                            "s",
+                            "end",
+                            "number"
+                        ]
+                    ];
+                };
+
+                /**
                  * Creates an Annotation message from a plain object. Also converts values to their respective internal types.
                  * @function fromObject
                  * @memberof google.protobuf.GeneratedCodeInfo.Annotation
@@ -15754,21 +16176,7 @@ $root.google = (function() {
                 Annotation.fromObject = function fromObject(object) {
                     if (object instanceof $root.google.protobuf.GeneratedCodeInfo.Annotation)
                         return object;
-                    var message = new $root.google.protobuf.GeneratedCodeInfo.Annotation();
-                    if (object.path) {
-                        if (!Array.isArray(object.path))
-                            throw TypeError(".google.protobuf.GeneratedCodeInfo.Annotation.path: array expected");
-                        message.path = [];
-                        for (var i = 0; i < object.path.length; ++i)
-                            message.path[i] = object.path[i] | 0;
-                    }
-                    if (object.sourceFile != null)
-                        message.sourceFile = String(object.sourceFile);
-                    if (object.begin != null)
-                        message.begin = object.begin | 0;
-                    if (object.end != null)
-                        message.end = object.end | 0;
-                    return message;
+                    return $root.objectMapper.toMessage(object, new $root.google.protobuf.GeneratedCodeInfo.Annotation(), $root.google.protobuf.GeneratedCodeInfo.Annotation._getObjectMap());
                 };
 
                 /**
@@ -15783,26 +16191,7 @@ $root.google = (function() {
                 Annotation.toObject = function toObject(message, options) {
                     if (!options)
                         options = {};
-                    var object = {};
-                    if (options.arrays || options.defaults)
-                        object.path = [];
-                    if (options.defaults) {
-                        object.sourceFile = "";
-                        object.begin = 0;
-                        object.end = 0;
-                    }
-                    if (message.path && message.path.length) {
-                        object.path = [];
-                        for (var j = 0; j < message.path.length; ++j)
-                            object.path[j] = message.path[j];
-                    }
-                    if (message.sourceFile != null && message.hasOwnProperty("sourceFile"))
-                        object.sourceFile = message.sourceFile;
-                    if (message.begin != null && message.hasOwnProperty("begin"))
-                        object.begin = message.begin;
-                    if (message.end != null && message.hasOwnProperty("end"))
-                        object.end = message.end;
-                    return object;
+                    return $root.objectMapper.toObject(message, options, $root.google.protobuf.GeneratedCodeInfo.Annotation._getObjectMap());
                 };
 
                 /**
@@ -15827,5 +16216,3 @@ $root.google = (function() {
 
     return google;
 })();
-
-module.exports = $root;

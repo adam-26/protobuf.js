@@ -1,8 +1,3 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
-"use strict";
-
-var $protobuf = require("../../minimal");
-
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
@@ -351,6 +346,98 @@ $root.Message = (function() {
     };
 
     /**
+     * Object mapper - array values are:
+     *   [
+     *     required field
+     *     repeated field
+     *     field type - (a)rray, (m)ap, (e)num, (s)calar
+     *     field name
+     *     JavaScript scalar type
+     *     enumById variable
+     *     enumByName variable
+     *   ]
+     */
+    Message._getObjectMap = function _getObjectMap() {
+        var SomeEnumById = {
+            1: "ONE",
+            2: "TWO"
+        };
+        var SomeEnumByName = {
+            ONE: 1,
+            TWO: 2
+        };
+        return [
+            [
+                0,
+                0,
+                "s",
+                "stringVal",
+                "string"
+            ],
+            [
+                0,
+                1,
+                "s",
+                "stringRepeated",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "uint64Val",
+                "number|Long"
+            ],
+            [
+                0,
+                1,
+                "s",
+                "uint64Repeated",
+                "number|Long"
+            ],
+            [
+                0,
+                0,
+                "a",
+                "bytesVal",
+                "Uint8Array"
+            ],
+            [
+                0,
+                1,
+                "a",
+                "bytesRepeated",
+                "Uint8Array"
+            ],
+            [
+                0,
+                0,
+                "e",
+                "enumVal",
+                Message.SomeEnum,
+                SomeEnumById,
+                SomeEnumByName
+            ],
+            [
+                0,
+                1,
+                "e",
+                "enumRepeated",
+                Message.SomeEnum,
+                SomeEnumById,
+                SomeEnumByName
+            ],
+            [
+                0,
+                0,
+                "m",
+                "int64Map",
+                "number|Long"
+            ]
+        ];
+    };
+
+    /**
      * Creates a Message message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
      * @memberof Message
@@ -361,96 +448,7 @@ $root.Message = (function() {
     Message.fromObject = function fromObject(object) {
         if (object instanceof $root.Message)
             return object;
-        var message = new $root.Message();
-        if (object.stringVal != null)
-            message.stringVal = String(object.stringVal);
-        if (object.stringRepeated) {
-            if (!Array.isArray(object.stringRepeated))
-                throw TypeError(".Message.stringRepeated: array expected");
-            message.stringRepeated = [];
-            for (var i = 0; i < object.stringRepeated.length; ++i)
-                message.stringRepeated[i] = String(object.stringRepeated[i]);
-        }
-        if (object.uint64Val != null)
-            if ($util.Long)
-                (message.uint64Val = $util.Long.fromValue(object.uint64Val)).unsigned = true;
-            else if (typeof object.uint64Val === "string")
-                message.uint64Val = parseInt(object.uint64Val, 10);
-            else if (typeof object.uint64Val === "number")
-                message.uint64Val = object.uint64Val;
-            else if (typeof object.uint64Val === "object")
-                message.uint64Val = new $util.LongBits(object.uint64Val.low >>> 0, object.uint64Val.high >>> 0).toNumber(true);
-        if (object.uint64Repeated) {
-            if (!Array.isArray(object.uint64Repeated))
-                throw TypeError(".Message.uint64Repeated: array expected");
-            message.uint64Repeated = [];
-            for (var i = 0; i < object.uint64Repeated.length; ++i)
-                if ($util.Long)
-                    (message.uint64Repeated[i] = $util.Long.fromValue(object.uint64Repeated[i])).unsigned = true;
-                else if (typeof object.uint64Repeated[i] === "string")
-                    message.uint64Repeated[i] = parseInt(object.uint64Repeated[i], 10);
-                else if (typeof object.uint64Repeated[i] === "number")
-                    message.uint64Repeated[i] = object.uint64Repeated[i];
-                else if (typeof object.uint64Repeated[i] === "object")
-                    message.uint64Repeated[i] = new $util.LongBits(object.uint64Repeated[i].low >>> 0, object.uint64Repeated[i].high >>> 0).toNumber(true);
-        }
-        if (object.bytesVal != null)
-            if (typeof object.bytesVal === "string")
-                $util.base64.decode(object.bytesVal, message.bytesVal = $util.newBuffer($util.base64.length(object.bytesVal)), 0);
-            else if (object.bytesVal.length)
-                message.bytesVal = object.bytesVal;
-        if (object.bytesRepeated) {
-            if (!Array.isArray(object.bytesRepeated))
-                throw TypeError(".Message.bytesRepeated: array expected");
-            message.bytesRepeated = [];
-            for (var i = 0; i < object.bytesRepeated.length; ++i)
-                if (typeof object.bytesRepeated[i] === "string")
-                    $util.base64.decode(object.bytesRepeated[i], message.bytesRepeated[i] = $util.newBuffer($util.base64.length(object.bytesRepeated[i])), 0);
-                else if (object.bytesRepeated[i].length)
-                    message.bytesRepeated[i] = object.bytesRepeated[i];
-        }
-        switch (object.enumVal) {
-        case "ONE":
-        case 1:
-            message.enumVal = 1;
-            break;
-        case "TWO":
-        case 2:
-            message.enumVal = 2;
-            break;
-        }
-        if (object.enumRepeated) {
-            if (!Array.isArray(object.enumRepeated))
-                throw TypeError(".Message.enumRepeated: array expected");
-            message.enumRepeated = [];
-            for (var i = 0; i < object.enumRepeated.length; ++i)
-                switch (object.enumRepeated[i]) {
-                default:
-                case "ONE":
-                case 1:
-                    message.enumRepeated[i] = 1;
-                    break;
-                case "TWO":
-                case 2:
-                    message.enumRepeated[i] = 2;
-                    break;
-                }
-        }
-        if (object.int64Map) {
-            if (typeof object.int64Map !== "object")
-                throw TypeError(".Message.int64Map: object expected");
-            message.int64Map = {};
-            for (var keys = Object.keys(object.int64Map), i = 0; i < keys.length; ++i)
-                if ($util.Long)
-                    (message.int64Map[keys[i]] = $util.Long.fromValue(object.int64Map[keys[i]])).unsigned = false;
-                else if (typeof object.int64Map[keys[i]] === "string")
-                    message.int64Map[keys[i]] = parseInt(object.int64Map[keys[i]], 10);
-                else if (typeof object.int64Map[keys[i]] === "number")
-                    message.int64Map[keys[i]] = object.int64Map[keys[i]];
-                else if (typeof object.int64Map[keys[i]] === "object")
-                    message.int64Map[keys[i]] = new $util.LongBits(object.int64Map[keys[i]].low >>> 0, object.int64Map[keys[i]].high >>> 0).toNumber();
-        }
-        return message;
+        return $root.objectMapper.toMessage(object, new $root.Message(), $root.Message._getObjectMap());
     };
 
     /**
@@ -465,69 +463,7 @@ $root.Message = (function() {
     Message.toObject = function toObject(message, options) {
         if (!options)
             options = {};
-        var object = {};
-        if (options.arrays || options.defaults) {
-            object.stringRepeated = [];
-            object.uint64Repeated = [];
-            object.bytesRepeated = [];
-            object.enumRepeated = [];
-        }
-        if (options.objects || options.defaults)
-            object.int64Map = {};
-        if (options.defaults) {
-            object.stringVal = "";
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, true);
-                object.uint64Val = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.uint64Val = options.longs === String ? "0" : 0;
-            object.bytesVal = options.bytes === String ? "" : [];
-            object.enumVal = options.enums === String ? "ONE" : 1;
-        }
-        if (message.stringVal != null && message.hasOwnProperty("stringVal"))
-            object.stringVal = message.stringVal;
-        if (message.stringRepeated && message.stringRepeated.length) {
-            object.stringRepeated = [];
-            for (var j = 0; j < message.stringRepeated.length; ++j)
-                object.stringRepeated[j] = message.stringRepeated[j];
-        }
-        if (message.uint64Val != null && message.hasOwnProperty("uint64Val"))
-            if (typeof message.uint64Val === "number")
-                object.uint64Val = options.longs === String ? String(message.uint64Val) : message.uint64Val;
-            else
-                object.uint64Val = options.longs === String ? $util.Long.prototype.toString.call(message.uint64Val) : options.longs === Number ? new $util.LongBits(message.uint64Val.low >>> 0, message.uint64Val.high >>> 0).toNumber(true) : message.uint64Val;
-        if (message.uint64Repeated && message.uint64Repeated.length) {
-            object.uint64Repeated = [];
-            for (var j = 0; j < message.uint64Repeated.length; ++j)
-                if (typeof message.uint64Repeated[j] === "number")
-                    object.uint64Repeated[j] = options.longs === String ? String(message.uint64Repeated[j]) : message.uint64Repeated[j];
-                else
-                    object.uint64Repeated[j] = options.longs === String ? $util.Long.prototype.toString.call(message.uint64Repeated[j]) : options.longs === Number ? new $util.LongBits(message.uint64Repeated[j].low >>> 0, message.uint64Repeated[j].high >>> 0).toNumber(true) : message.uint64Repeated[j];
-        }
-        if (message.bytesVal != null && message.hasOwnProperty("bytesVal"))
-            object.bytesVal = options.bytes === String ? $util.base64.encode(message.bytesVal, 0, message.bytesVal.length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesVal) : message.bytesVal;
-        if (message.bytesRepeated && message.bytesRepeated.length) {
-            object.bytesRepeated = [];
-            for (var j = 0; j < message.bytesRepeated.length; ++j)
-                object.bytesRepeated[j] = options.bytes === String ? $util.base64.encode(message.bytesRepeated[j], 0, message.bytesRepeated[j].length) : options.bytes === Array ? Array.prototype.slice.call(message.bytesRepeated[j]) : message.bytesRepeated[j];
-        }
-        if (message.enumVal != null && message.hasOwnProperty("enumVal"))
-            object.enumVal = options.enums === String ? $root.Message.SomeEnum[message.enumVal] : message.enumVal;
-        if (message.enumRepeated && message.enumRepeated.length) {
-            object.enumRepeated = [];
-            for (var j = 0; j < message.enumRepeated.length; ++j)
-                object.enumRepeated[j] = options.enums === String ? $root.Message.SomeEnum[message.enumRepeated[j]] : message.enumRepeated[j];
-        }
-        var keys2;
-        if (message.int64Map && (keys2 = Object.keys(message.int64Map)).length) {
-            object.int64Map = {};
-            for (var j = 0; j < keys2.length; ++j)
-                if (typeof message.int64Map[keys2[j]] === "number")
-                    object.int64Map[keys2[j]] = options.longs === String ? String(message.int64Map[keys2[j]]) : message.int64Map[keys2[j]];
-                else
-                    object.int64Map[keys2[j]] = options.longs === String ? $util.Long.prototype.toString.call(message.int64Map[keys2[j]]) : options.longs === Number ? new $util.LongBits(message.int64Map[keys2[j]].low >>> 0, message.int64Map[keys2[j]].high >>> 0).toNumber() : message.int64Map[keys2[j]];
-        }
-        return object;
+        return $root.objectMapper.toObject(message, options, $root.Message._getObjectMap());
     };
 
     /**
@@ -556,5 +492,3 @@ $root.Message = (function() {
 
     return Message;
 })();
-
-module.exports = $root;

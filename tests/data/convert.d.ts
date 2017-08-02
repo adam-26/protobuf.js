@@ -29,6 +29,7 @@ export class Message {
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Message;
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Message;
     public static verify(message: { [k: string]: any }): (string|null);
+    public static _getObjectMap(): void;
     public static fromObject(object: { [k: string]: any }): Message;
     public static toObject(message: Message, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };

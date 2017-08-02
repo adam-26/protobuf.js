@@ -1,8 +1,3 @@
-/*eslint-disable block-scoped-var, no-redeclare, no-control-regex, no-prototype-builtins*/
-"use strict";
-
-var $protobuf = require("../../minimal");
-
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
@@ -182,6 +177,44 @@ $root.Test1 = (function() {
     };
 
     /**
+     * Object mapper - array values are:
+     *   [
+     *     required field
+     *     repeated field
+     *     field type - (a)rray, (m)ap, (e)num, (s)calar
+     *     field name
+     *     JavaScript scalar type
+     *     enumById variable
+     *     enumByName variable
+     *   ]
+     */
+    Test1._getObjectMap = function _getObjectMap() {
+        return [
+            [
+                0,
+                0,
+                "s",
+                "field1",
+                "string"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "field2",
+                "number"
+            ],
+            [
+                0,
+                0,
+                "s",
+                "field3",
+                "boolean"
+            ]
+        ];
+    };
+
+    /**
      * Creates a Test1 message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
      * @memberof Test1
@@ -192,14 +225,7 @@ $root.Test1 = (function() {
     Test1.fromObject = function fromObject(object) {
         if (object instanceof $root.Test1)
             return object;
-        var message = new $root.Test1();
-        if (object.field1 != null)
-            message.field1 = String(object.field1);
-        if (object.field2 != null)
-            message.field2 = object.field2 >>> 0;
-        if (object.field3 != null)
-            message.field3 = Boolean(object.field3);
-        return message;
+        return $root.objectMapper.toMessage(object, new $root.Test1(), $root.Test1._getObjectMap());
     };
 
     /**
@@ -214,19 +240,7 @@ $root.Test1 = (function() {
     Test1.toObject = function toObject(message, options) {
         if (!options)
             options = {};
-        var object = {};
-        if (options.defaults) {
-            object.field1 = "";
-            object.field2 = 0;
-            object.field3 = false;
-        }
-        if (message.field1 != null && message.hasOwnProperty("field1"))
-            object.field1 = message.field1;
-        if (message.field2 != null && message.hasOwnProperty("field2"))
-            object.field2 = message.field2;
-        if (message.field3 != null && message.hasOwnProperty("field3"))
-            object.field3 = message.field3;
-        return object;
+        return $root.objectMapper.toObject(message, options, $root.Test1._getObjectMap());
     };
 
     /**
@@ -362,6 +376,22 @@ $root.Test2 = (function() {
     };
 
     /**
+     * Object mapper - array values are:
+     *   [
+     *     required field
+     *     repeated field
+     *     field type - (a)rray, (m)ap, (e)num, (s)calar
+     *     field name
+     *     JavaScript scalar type
+     *     enumById variable
+     *     enumByName variable
+     *   ]
+     */
+    Test2._getObjectMap = function _getObjectMap() {
+        return [];
+    };
+
+    /**
      * Creates a Test2 message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
      * @memberof Test2
@@ -419,5 +449,3 @@ $root.Test3 = (function() {
     values[valuesById[4] = "FOUR"] = 4;
     return values;
 })();
-
-module.exports = $root;

@@ -17,6 +17,7 @@ export class Test1 {
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Test1;
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Test1;
     public static verify(message: { [k: string]: any }): (string|null);
+    public static _getObjectMap(): void;
     public static fromObject(object: { [k: string]: any }): Test1;
     public static toObject(message: Test1, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
@@ -33,6 +34,7 @@ export class Test2 {
     public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Test2;
     public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Test2;
     public static verify(message: { [k: string]: any }): (string|null);
+    public static _getObjectMap(): void;
     public static fromObject(object: { [k: string]: any }): Test2;
     public static toObject(message: Test2, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };

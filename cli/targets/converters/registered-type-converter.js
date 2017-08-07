@@ -119,14 +119,9 @@ converter.toObject = function toObject(mtype) {
     var fields = mtype.fieldsArray.slice().sort(util.compareFieldsById);
     if (!fields.length)
         return util.codegen()("return {}");
-    var gen = util.codegen(["m", "o"], mtype.name + "$toObject")
-    ("if(!o)")
-    ("o={}");
-
-    // ("var d={}");
-
+    var gen = util.codegen(["m", "o"], mtype.name + "$toObject");
     gen(
-    "return $root.objectMapper.toObject(m, o,")
+    "return $root.objectMapper.toObject(m, o || {},")
     ("this.ctor." + converter.GET_OBJECT_MAP_FN + "()")
     (");");
 
